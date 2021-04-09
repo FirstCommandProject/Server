@@ -94,7 +94,7 @@ def apply_question_to_state(qu, st, rt=1):
 
 
 # Первый аргумент:
-# -a <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
+# -update <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
 # (см. функцию apply_question_to_state)
 #
 # TODO -delete <session_id> удалить сессию
@@ -108,8 +108,10 @@ if __name__ == '__main__':
 
         state = raw_json_to_dict(import_state(session_id))
         question = raw_json_to_dict(import_question_data(question_id))
+
         apply_question_to_state(question, state, ratio)
         normalize_state(state)
+
         write_state(session_id, json_to_string(state))
     else:
         print('Ошибка: неизвестный аргумент')
