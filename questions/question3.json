@@ -1,11 +1,11 @@
 {
-    "info": "Вы любите астрономию?",
-    "tags": ["astronomy", "physics"],
+    "info": "Вы любите программирование?",
+    "tags": ["programming"],
     "weights": {
         "math": 1.3,
-        "informatics": 1,
-        "programming": 1,
+        "informatics": 1.6,
+        "programming": 2,
         "psychology": 0.9,
-        "astronomy": 2
+        "astronomy": 1
     }
 }

@@ -1,6 +1,11 @@
 import sys
-from Server.file_io import *
-from Server.question_chooser import *
+from file_io import *
+from question_chooser import *
+
+
+# Возврат любого значения из программы
+def emit(message):
+    print(message)
 
 
 # Нормализует веса в состоянии по принципу нормализации вектора
@@ -32,7 +37,9 @@ def apply_question_to_state(qu, st, rt=1):
 
 # Первый аргумент:
 # -update <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
-# (см. функцию apply_question_to_state)
+#   (см. функцию apply_question_to_state)
+# -get_question <session_id> <strictness>(опционально) вернуть подходящий пользователю вопрос.
+#   Рандомность определяется параметром strictness (0-рандом, 1-строго). См документацию в файле question_chooser.py
 #
 # TODO -delete <session_id> удалить сессию
 # TODO -new <session_id> создать сессию
@@ -50,5 +57,14 @@ if __name__ == '__main__':
         normalize_state(state)
 
         write_state(session_id, state)
+    elif arg == '-get_question':
+        session_id = int(sys.argv[2])
+        state = import_state(session_id)
+
+        if len(sys.argv) > 3:
+            strictness = int(sys.argv[3])
+            emit(choose_relevant(state, strictness=strictness))
+        else:
+            emit(choose_relevant(state))
     else:
         print('Ошибка: неизвестный аргумент')

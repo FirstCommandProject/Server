@@ -1,5 +1,5 @@
 import random
-from Server.file_io import get_questions_list, import_question_data
+from file_io import get_questions_list, import_question_data
 
 
 # Выбирает актуальный вопрос для пользователя, основываясь на уже известных предпочтениях
@@ -15,6 +15,7 @@ def choose_relevant(state, strictness=0.75) -> int:
     questions_id = get_questions_list()
 
     assert state['weights']
+    assert 0 <= strictness <= 1
 
     # 1.
     tags = list(state['weights'].keys())
@@ -34,7 +35,7 @@ def choose_relevant(state, strictness=0.75) -> int:
 
     # Непредвиденная ситуация (если нет вопросов с таким тегом)
     if len(potential_questions) == 0:
-        print(f"Warning: no questions with tag '{tags[chosen_tag_index]}'")
+        # print(f"Warning: no questions with tag '{tags[chosen_tag_index]}'")
         return choose_relevant(state, strictness/2)
 
     return potential_questions[random.randint(0, len(potential_questions)-1)]
