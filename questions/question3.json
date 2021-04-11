@@ -1,0 +1,11 @@
+{
+    "info": "Вы любите астрономию?",
+    "tags": ["astronomy", "physics"],
+    "weights": {
+        "math": 1.3,
+        "informatics": 1,
+        "programming": 1,
+        "psychology": 0.9,
+        "astronomy": 2
+    }
+}

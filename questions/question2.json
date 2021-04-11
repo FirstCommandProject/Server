@@ -1,0 +1,11 @@
+{
+    "info": "Вы любите психологию?",
+    "tags": ["psychology"],
+    "weights": {
+        "math": 0.8,
+        "informatics": 1,
+        "programming": 0.9,
+        "psychology": 2,
+        "astronomy": 1
+    }
+}

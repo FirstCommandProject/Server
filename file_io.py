@@ -63,3 +63,17 @@ def get_sessions_list():
         raw = s.read()
 
     return raw_json_to_dict(raw)['sessions']
+
+
+# Возвращает массив id всех вопросов из базы
+def get_questions_list():
+    questions_path = "questions.json"
+
+    # Ожидание доступа к файлу
+    while not access(questions_path, R_OK):
+        sleep(0.1)
+
+    with open(questions_path, 'r', encoding='utf-8') as s:
+        raw = s.read()
+
+    return raw_json_to_dict(raw)['questions']
