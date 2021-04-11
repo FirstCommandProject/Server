@@ -43,12 +43,12 @@ if __name__ == '__main__':
         question_id = int(sys.argv[3])
         ratio = int(sys.argv[4])
 
-        state = raw_json_to_dict(import_state(session_id))
-        question = raw_json_to_dict(import_question_data(question_id))
+        state = (import_state(session_id))
+        question = (import_question_data(question_id))
 
         apply_question_to_state(question, state, ratio)
         normalize_state(state)
 
-        write_state(session_id, json_to_string(state))
+        write_state(session_id, state)
     else:
         print('Ошибка: неизвестный аргумент')
