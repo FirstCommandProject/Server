@@ -3,6 +3,19 @@ from time import sleep
 from os import access, R_OK
 
 
+# Считывание всех тегов экспертной системы
+def import_tags() -> list:
+    question_path = f"tags.json"
+
+    # Ожидание доступа к файлу
+    while not access(question_path, R_OK):
+        sleep(0.1)
+
+    with open(question_path, encoding='utf-8') as q:
+        raw = q.read()
+    return _raw_json_to_dict(raw)['tags']
+
+
 # Считывание с файла данных о вопросе в виде json. Файл формата question%qid%.json
 def import_question_data(qid) -> dict:
     question_path = f"questions/question{qid}.json"
