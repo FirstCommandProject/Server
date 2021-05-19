@@ -1,0 +1,21 @@
+{
+  "info": "Вам нравится экономика?",
+  "tags": [ "math", "economy", "linguistics", "geography"],
+  "weights": {
+    "math":  1.4,
+    "astronomy":  1.2,
+    "programming":  1.3,
+    "informatics":  1.3,
+    "psyhology":  0.6,
+    "linguistics":  0.6,
+    "economy":  1.7,
+    "geography":  1.2,
+    "biology": 0.5,
+    "anatomy":  0.5,
+    "religious studies":  0.5,
+    "political science":  1.5,
+    "chemistry":  0.5,
+    "business":  1.2,
+    "engineering":  0.5
+  }
+}
