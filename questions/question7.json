@@ -1,0 +1,14 @@
+{
+  "info": "Вам нравится экономическая география?",
+  "tags": [ "math", "economy", "linguistics", "geography"],
+  "weights": {
+    "math": 1.6,
+    "informatics": 1,
+    "programming": 1,
+    "psychology": 1,
+    "astronomy": 1,
+    "geography": 1.6,
+    "linguistics": 1.2,
+    "economy": 1.7
+  }
+}

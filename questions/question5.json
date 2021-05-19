@@ -1,0 +1,14 @@
+{
+  "info": "Вам нравится заниматься исследованиями в области психологии?",
+  "tags": [ "psyhology", "linguistics"],
+  "weights": {
+    "math": 1,
+    "informatics": 1,
+    "programming": 1,
+    "psychology": 1.8,
+    "astronomy": 1,
+    "geography": 1,
+    "linguistics": 1.4,
+    "economy":  1,
+  }
+}

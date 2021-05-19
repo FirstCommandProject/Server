@@ -1,0 +1,14 @@
+{
+  "info": "Вам нравится программировать роботов для космических исследований?",
+  "tags": [ "math", "programming", "informatics", "astronomy", "geography" ],
+  "weights": {
+    "math": 1.8,
+    "informatics": 1.4,
+    "programming": 1.7,
+    "psychology": 1,
+    "astronomy": 1.6,
+    "geography": 1.3,
+    "linguistics": 1,
+    "economy": 1
+  }
+}
