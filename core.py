@@ -36,16 +36,16 @@ def apply_question_to_state(qu, st, rt=1):
 
 
 # Первый аргумент:
-# -update <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
+# -u <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
 #   (см. функцию apply_question_to_state)
-# -get_question <session_id> <strictness>(опционально) вернуть подходящий пользователю вопрос.
+# -q <session_id> <strictness>(опционально) вернуть подходящий пользователю вопрос.
 #   Рандомность определяется параметром strictness (0-рандом, 1-строго). См документацию в файле question_chooser.py
 #
 # TODO -delete <session_id> удалить сессию
 # TODO -new <session_id> создать сессию
 if __name__ == '__main__':
     arg = sys.argv[1]
-    if arg == '-update':
+    if arg == '-u':
         session_id = int(sys.argv[2])
         question_id = int(sys.argv[3])
         ratio = int(sys.argv[4])
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         normalize_state(state)
 
         write_state(session_id, state)
-    elif arg == '-get_question':
+    elif arg == '-q':
         session_id = int(sys.argv[2])
         state = import_state(session_id)
 
@@ -65,6 +65,7 @@ if __name__ == '__main__':
             strictness = int(sys.argv[3])
             emit(choose_relevant(state, strictness=strictness))
         else:
-            emit(choose_relevant(state))
+            relevant_question_id = choose_relevant(state)
+            emit(f'{relevant_question_id}. {import_question_data(relevant_question_id)["info"]}')
     else:
         print('Ошибка: неизвестный аргумент')
