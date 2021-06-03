@@ -1,0 +1,21 @@
+{
+  "info": "Вам нравятся технические предметы?",
+  "tags": [ "math", "programming", "informatics", "astronomy", "economy", "engineering" ],
+  "weights": {
+    "math": 1.5,
+    "astronomy": 1.5,
+    "programming": 1.5,
+    "informatics": 1.5,
+    "psyhology": 0.5,
+    "linguistics": 0.5,
+    "economy": 1.5,
+    "geography": 1.5,
+    "biology": 0.5,
+    "anatomy": 0.5,
+    "religious studies": 0.5,
+    "political science": 0.5,
+    "chemistry": 0.5,
+    "business": 0.5,
+    "engineering": 1.5
+  }
+}

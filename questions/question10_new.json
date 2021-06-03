@@ -1,0 +1,21 @@
+{
+  "info": "Вам нравятся исследования в области математики и информатики?",
+  "tags": [ "math", "informatics", "programming" ],
+  "weights": {
+    "math": 1.9,
+    "astronomy": 1.5,
+    "programming": 1.5,
+    "informatics": 1.5,
+    "psyhology": 0.5,
+    "linguistics": 0.5,
+    "economy": 0.5,
+    "geography": 0.5,
+    "biology": 0.5,
+    "anatomy": 0.5,
+    "religious studies": 0.5,
+    "political science": 0.5,
+    "chemistry": 0.8,
+    "business": 0.2,
+    "engineering": 1.8
+  }
+}

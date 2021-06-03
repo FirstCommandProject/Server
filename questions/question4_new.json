@@ -1,0 +1,21 @@
+{
+  "info": "Вам нравится теоретическая информатика?",
+  "tags": [ "math", "informatics", "programming", "engineering" ],
+  "weights": {
+    "math":  1.4,
+    "astronomy":  1.2,
+    "programming":  1.4,
+    "informatics":  1.6,
+    "psyhology":  0.7,
+    "linguistics":  0.5,
+    "economy":  0.5,
+    "geography":  0.5,
+    "biology":  0.5,
+    "anatomy":  0.5,
+    "religious studies":  0.5,
+    "political science":  0.5,
+    "chemistry":  0.5,
+    "business": 1.1,
+    "engineering":  1.25
+  }
+}
