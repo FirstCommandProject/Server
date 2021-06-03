@@ -35,6 +35,11 @@ def apply_question_to_state(qu, st, rt=1):
                 st['weights'][key] /= qu['weights'][key]
 
 
+# Вывод сообщения об ошибке
+def error():
+    print("ERROR")
+
+
 # Первый аргумент:
 # -u <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
 #   (см. функцию apply_question_to_state)
@@ -44,28 +49,37 @@ def apply_question_to_state(qu, st, rt=1):
 # TODO -delete <session_id> удалить сессию
 # TODO -new <session_id> создать сессию
 if __name__ == '__main__':
-    arg = sys.argv[1]
-    if arg == '-u':
-        session_id = int(sys.argv[2])
-        question_id = int(sys.argv[3])
-        ratio = int(sys.argv[4])
+    try:
+        arg = sys.argv[1]
+        if arg == '-u':
+            session_id = int(sys.argv[2])
+            question_id = int(sys.argv[3])
+            ratio = int(sys.argv[4])
 
-        state = (import_state(session_id))
-        question = (import_question_data(question_id))
+            state = (import_state(session_id))
+            answered = state['answered']
+            question = (import_question_data(question_id))
 
-        apply_question_to_state(question, state, ratio)
-        normalize_state(state)
+            apply_question_to_state(question, state, ratio)
+            answered.append(question_id)
+            normalize_state(state)
 
-        write_state(session_id, state)
-    elif arg == '-q':
-        session_id = int(sys.argv[2])
-        state = import_state(session_id)
+            write_state(session_id, state)
 
-        if len(sys.argv) > 3:
-            strictness = int(sys.argv[3])
-            emit(choose_relevant(state, strictness=strictness))
+        elif arg == '-q':
+            session_id = int(sys.argv[2])
+            state = import_state(session_id)
+            answered = state['answered']
+
+            if len(sys.argv) > 3:
+                strictness = int(sys.argv[3])
+                emit(choose_relevant(state, strictness=strictness))
+            else:
+                relevant_question_id = choose_relevant(state)
+                while relevant_question_id in answered:
+                    relevant_question_id = choose_relevant(state)
+                emit(f'{relevant_question_id}. {import_question_data(relevant_question_id)["info"]}')
         else:
-            relevant_question_id = choose_relevant(state)
-            emit(f'{relevant_question_id}. {import_question_data(relevant_question_id)["info"]}')
-    else:
-        print('Ошибка: неизвестный аргумент')
+            error()
+    except:
+        error()
