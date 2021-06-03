@@ -29,17 +29,37 @@ def import_question_data(qid) -> dict:
     return _raw_json_to_dict(raw)
 
 
-# Считывание с файла состояния данной сессии в виде json. Файл формата session%qid%.json
-def import_state(sid) -> dict:
-    state_path = f"sessions/session{sid}.json"
+# Считывание шаблона сессии (с весами 1)
+def import_default_state() -> dict:
+    default_state_path = f"sessions/session_pattern.json"
 
     # Ожидание доступа к файлу
-    while not access(state_path, R_OK):
+    while not access(default_state_path, R_OK):
         sleep(0.1)
 
-    with open(state_path, encoding='utf-8') as s:
+    with open(default_state_path, encoding='utf-8') as s:
         raw = s.read()
     return _raw_json_to_dict(raw)
+
+
+# Считывание с файла состояния данной сессии в виде json. Файл формата session%qid%.json
+def import_state(sid) -> dict:
+    try:
+        state_path = f"sessions/session{sid}.json"
+
+        # Ожидание доступа к файлу
+        while not access(state_path, R_OK):
+            sleep(0.1)
+
+        with open(state_path, encoding='utf-8') as s:
+            raw = s.read()
+
+        dct = _raw_json_to_dict(raw)
+        assert dct['weights']
+        assert dct['answered']
+    except (json.decoder.JSONDecodeError, AssertionError):
+        return import_default_state()
+    return dct
 
 
 # Запись файла состояния данной сессии в виде json. Файл формата session%qid%.json
