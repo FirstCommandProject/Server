@@ -45,9 +45,6 @@ def error():
 #   (см. функцию apply_question_to_state)
 # -q <session_id> <strictness>(опционально) вернуть подходящий пользователю вопрос.
 #   Рандомность определяется параметром strictness (0-рандом, 1-строго). См документацию в файле question_chooser.py
-#
-# TODO -delete <session_id> удалить сессию
-# TODO -new <session_id> создать сессию
 if __name__ == '__main__':
     try:
         arg = sys.argv[1]
