@@ -1,15 +1,9 @@
-import sys
-from file_io import *
-from question_chooser import *
-
-
-# Возврат любого значения из программы
-def emit(message):
-    print(message)
+import random
+import database_api
 
 
 # Нормализует веса в состоянии по принципу нормализации вектора
-def normalize_state(st):
+def _normalize_user_weights(st):
     max_weight = 0
     for key in st['weights'].keys():
         max_weight = max(max_weight, st['weights'][key])
@@ -19,64 +13,68 @@ def normalize_state(st):
         st['weights'][key] /= max_weight
 
 
-# Ratio 1 - полностью применить. Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 2
-# Ratio 0 - ничего не применять
-# Ratio -1 - применить в обратную сторону.
-# Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 0.5
-def apply_question_to_state(qu, st, rt=1):
-    if rt == 0:
-        return
-    question_keys = qu['weights'].keys()
-    for key in question_keys:
-        if st['weights'].get(key):
-            if rt > 0:
-                st['weights'][key] *= qu['weights'][key]
-            else:
-                st['weights'][key] /= qu['weights'][key]
+def _update_answered_list(user_session_data, question_id):
+    assert user_session_data['answered']
+    user_session_data['answered'].append(question_id)
 
 
-# Вывод сообщения об ошибке
-def error():
-    print("ERROR")
-
-
-# Первый аргумент:
-# -u <session_id> <question_id> <ratio> применить влияние вопроса на результат с коэф. ratio
-#   (см. функцию apply_question_to_state)
-# -q <session_id> <strictness>(опционально) вернуть подходящий пользователю вопрос.
-#   Рандомность определяется параметром strictness (0-рандом, 1-строго). См документацию в файле question_chooser.py
-if __name__ == '__main__':
+# Выбирает актуальный тег для пользователя, основываясь на уже известных предпочтениях
+# Поиск производится по тегам, указанным в вопросах
+# Выбирается один из тегов, который, вероятно, интересен человеку (хотя иногда может быть неинтересен)
+# Пармаетр strictness означает насколько строго будет выбираться (0 - рандомно, 1 - максимально строго)
+# Крайне не рекомендуется выбирать значения strictness в пределах от 0.000...1 до 0.2
+# Возвращает тег
+def choose_relevant_tag(user_session_data, strictness=0.75) -> str:
     try:
-        arg = sys.argv[1]
-        if arg == '-u':
-            session_id = int(sys.argv[2])
-            question_id = int(sys.argv[3])
-            ratio = int(sys.argv[4])
+        assert user_session_data['weights']
+        assert 0 <= strictness <= 1
+    except AssertionError:
+        return None
 
-            state = (import_state(session_id))
-            answered = state['answered']
-            question = (import_question_data(question_id))
+    tags = list(user_session_data['weights'].keys())
+    chosen_tag_index = random.randint(0, len(tags)-1)
+    change = random.random()/(1+strictness) > \
+             (user_session_data['weights'][tags[chosen_tag_index]] * strictness) and strictness != 0
+    while change:
+        change = random.random()/(1+strictness) > (user_session_data['weights'][tags[chosen_tag_index]] * strictness)
+        chosen_tag_index = random.randint(0, len(tags)-1)
+    return tags[chosen_tag_index]
 
-            apply_question_to_state(question, state, ratio)
-            answered.append(question_id)
-            normalize_state(state)
 
-            write_state(session_id, state)
+# Ratio 1 - полностью применить. Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 2
+# Ratio 0.5 - частично применить.Пример:Математика: 1,в вопросе математика: 2,в итоге в состоянии будет математика: 1.5
+# Ratio 0 - ничего не применять
+# Ratio 0.5 - частично применить в обратную сторону.
+# Ratio -1 - применить в обратную сторону.
+#   Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 0.5
+def update_weights(user_session_data, question_id, ratio) -> dict:
+    try:
+        assert user_session_data['answered']
+        assert user_session_data['weights']
+    except AssertionError:
+        return None
 
-        elif arg == '-q':
-            session_id = int(sys.argv[2])
-            state = import_state(session_id)
-            answered = state['answered']
+    if ratio == 0:
+        return user_session_data
 
-            if len(sys.argv) > 3:
-                strictness = int(sys.argv[3])
-                emit(choose_relevant(state, strictness=strictness))
+    question: dict = database_api.get_question(question_id)  # Вызов API для получения нужного вопроса
+    question_keys = question['weights'].keys()
+
+    for key in question_keys:
+        if user_session_data['weights'].get(key):
+            if ratio == 1:
+                user_session_data['weights'][key] *= question['weights'][key]
+            elif ratio == 0.5:
+                user_session_data['weights'][key] *= (question['weights'][key] + 1)/2
+            elif ratio == -0.5:
+                user_session_data['weights'][key] /= (question['weights'][key] + 1)/2
+            elif ratio == -1:
+                user_session_data['weights'][key] /= question['weights'][key]
             else:
-                relevant_question_id = choose_relevant(state)
-                while relevant_question_id in answered:
-                    relevant_question_id = choose_relevant(state)
-                emit(f'{relevant_question_id}. {import_question_data(relevant_question_id)["info"]}')
-        else:
-            error()
-    except:
-        error()
+                # Unsupported ratio
+                return None
+
+    _update_answered_list(user_session_data, question_id)
+    _normalize_user_weights(user_session_data)
+
+    return user_session_data
