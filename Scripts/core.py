@@ -44,7 +44,7 @@ def choose_relevant_tag(user_session_data, strictness=0.75) -> str:
 # Ratio 1 - полностью применить. Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 2
 # Ratio 0.5 - частично применить.Пример:Математика: 1,в вопросе математика: 2,в итоге в состоянии будет математика: 1.5
 # Ratio 0 - ничего не применять
-# Ratio 0.5 - частично применить в обратную сторону.
+# Ratio -0.5 - частично применить в обратную сторону.
 # Ratio -1 - применить в обратную сторону.
 #   Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 0.5
 def update_weights(user_session_data, question_id, ratio) -> dict:
@@ -60,19 +60,22 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
     question: dict = database_api.get_question(question_id)  # Вызов API для получения нужного вопроса
     question_keys = question['weights'].keys()
 
-    for key in question_keys:
-        if user_session_data['weights'].get(key):
-            if ratio == 1:
-                user_session_data['weights'][key] *= question['weights'][key]
-            elif ratio == 0.5:
-                user_session_data['weights'][key] *= (question['weights'][key] + 1)/2
-            elif ratio == -0.5:
-                user_session_data['weights'][key] /= (question['weights'][key] + 1)/2
-            elif ratio == -1:
-                user_session_data['weights'][key] /= question['weights'][key]
-            else:
-                # Unsupported ratio
-                return None
+    try:
+        for key in question_keys:
+            if user_session_data['weights'].get(key):
+                if ratio == 1:
+                    user_session_data['weights'][key] *= question['weights'][key]
+                elif ratio == 0.5:
+                    user_session_data['weights'][key] *= (question['weights'][key] + 1)/2
+                elif ratio == -0.5:
+                    user_session_data['weights'][key] /= (question['weights'][key] + 1)/2
+                elif ratio == -1:
+                    user_session_data['weights'][key] /= question['weights'][key]
+                else:
+                    # Unsupported ratio
+                    return None
+    except ZeroDivisionError:
+        return None
 
     _update_answered_list(user_session_data, question_id)
     _normalize_user_weights(user_session_data)
