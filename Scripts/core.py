@@ -32,12 +32,13 @@ def choose_relevant_tag(user_session_data, strictness=0.75) -> str:
         return None
 
     tags = list(user_session_data['weights'].keys())
-    chosen_tag_index = random.randint(0, len(tags)-1)
-    change = random.random()/(1+strictness) > \
+    chosen_tag_index = random.randint(0, len(tags) - 1)
+    change = random.random() / (1 + strictness) > \
              (user_session_data['weights'][tags[chosen_tag_index]] * strictness) and strictness != 0
     while change:
-        change = random.random()/(1+strictness) > (user_session_data['weights'][tags[chosen_tag_index]] * strictness)
-        chosen_tag_index = random.randint(0, len(tags)-1)
+        change = random.random() / (1 + strictness) > (
+                    user_session_data['weights'][tags[chosen_tag_index]] * strictness)
+        chosen_tag_index = random.randint(0, len(tags) - 1)
     return tags[chosen_tag_index]
 
 
@@ -66,9 +67,9 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
                 if ratio == 1:
                     user_session_data['weights'][key] *= question['weights'][key]
                 elif ratio == 0.5:
-                    user_session_data['weights'][key] *= (question['weights'][key] + 1)/2
+                    user_session_data['weights'][key] *= (question['weights'][key] + 1) / 2
                 elif ratio == -0.5:
-                    user_session_data['weights'][key] /= (question['weights'][key] + 1)/2
+                    user_session_data['weights'][key] /= (question['weights'][key] + 1) / 2
                 elif ratio == -1:
                     user_session_data['weights'][key] /= question['weights'][key]
                 else:
