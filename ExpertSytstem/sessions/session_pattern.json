@@ -1,0 +1,21 @@
+{
+    "weights": {
+			"math":1,
+			"astronomy":1,
+			"programming":1, 
+			"informatics":1, 
+			"psyhology":1, 
+			"linguistics":1,
+			"economy":1, 
+			"geography":1, 
+			"biology":1,
+			"anatomy":1,
+			"religious studies":1,
+			"political science":1,
+			"chemistry":1,
+			"business":1,
+			"engineering":1
+			
+	},
+	"answered": []
+}
