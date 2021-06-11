@@ -1,5 +1,7 @@
 CREATE DATABASE expertsystem;
+
 USE expertsystem;
+
 CREATE TABLE Cafedras(
     id INT UNIQUE,
     title TEXT,
