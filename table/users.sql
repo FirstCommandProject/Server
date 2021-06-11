@@ -1,5 +1,7 @@
 CREATE DATABASE expertsystem;
+
 USE expertsystem;
+
 CREATE TABLE Users(
     login VARCHAR (255),
     UNIQUE (login),
