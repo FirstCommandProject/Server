@@ -4,7 +4,7 @@ import mysql.connector
 # Функция, которая проверяет на наличие sql запроса DROP TABLE
 def _find_injection(string):
     string = str(string)
-    if "DROP TABLE" in string or "--" in string or ";" in string:
+    if "DROP TABLE" in string or "--" in string:
         return 1
     else:
         return 0
