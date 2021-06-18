@@ -156,7 +156,7 @@ def select_table_results_weights():
 
 
 # Функция, которая выполняет sql запрос select к таблице Results по столбцу time
-def select_table_results_login(time):
+def select_table_results_time(time):
     cursor = database.cursor()
     cursor.execute(f"SELECT * FROM Results WHERE time = %s", (time, ))
     result = cursor.fetchall()
@@ -257,49 +257,49 @@ def select_table_cafedras_all_rows():
 # Функция, которая выполняет sql запрос insert к таблице Results
 def insert_table_results(login, weights, time):
     cursor = database.cursor()
-    cursor.execute(f"INSERT INTO Results VALUES(%s, %S, %s)", (login, weights, time))
+    cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу login
 def upsert_table_users_login(last_login, new_login):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET login = %s WHERE login = %s", (last_login, new_login))
+    cursor.execute(f"UPDATE Users SET login = %s WHERE login = %s", (last_login, new_login, ))
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу password
 def upsert_table_users_password(login, new_password):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET password = %s WHERE login = %s", (new_password, login))
+    cursor.execute(f"UPDATE Users SET password = %s WHERE login = %s", (new_password, login, ))
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу name
 def upsert_table_users_name(login, new_name):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET name = %s WHERE login = %s", (new_name, login))
+    cursor.execute(f"UPDATE Users SET name = %s WHERE login = %s", (new_name, login, ))
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу surname
 def upsert_table_users_surname(login, new_surname):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET surname = %s WHERE login = %s", (new_surname, login))
+    cursor.execute(f"UPDATE Users SET surname = %s WHERE login = %s", (new_surname, login, ))
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу patronymic
 def upsert_table_users_patronymic(login, new_patronymic):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET patronymic = %s WHERE login = %s", (new_patronymic, login))
+    cursor.execute(f"UPDATE Users SET patronymic = %s WHERE login = %s", (new_patronymic, login, ))
     database.commit()
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу university
 def upsert_table_users_university(login, new_university):
     cursor = database.cursor()
-    cursor.execute(f"UPDATE Users SET university = %s WHERE login =  %s", (new_university, login))
+    cursor.execute(f"UPDATE Users SET university = %s WHERE login =  %s", (new_university, login, ))
     database.commit()
 
 
