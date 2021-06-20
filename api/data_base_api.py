@@ -1,5 +1,8 @@
 import mysql.connector
-
+import unittest
+import datetime
+# !/usr/bin/python
+# -*- coding: utf8 -*-
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу id
 def select_table_questions_id(id):
@@ -150,7 +153,7 @@ def select_table_users_all_rows():
 def select_table_results_login(login):
     try:
         cursor = database.cursor()
-        cursor.execute(f"SELECT * FROM Users WHERE login = %s", (login,))
+        cursor.execute(f"SELECT * FROM Results WHERE login = %s", (login,))
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
@@ -200,7 +203,7 @@ def select_table_cafedras_id(id):
         cursor = database.cursor()
         cursor.execute(f"SELECT * FROM Cafedras WHERE id = %s", (int(id),))
         result = cursor.fetchall()
-        result.inser(0, 0)
+        result.insert(0, 0)
         return result
     except mysql.connector.Error as err:
         return err.errno
@@ -284,7 +287,7 @@ def insert_table_results(login, weights, time):
         cursor = database.cursor()
         cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
         database.commit()
-    except mysql.connector.Error as err:
+    except mysql.connector.ProgrammingError as err:
         return err.errno
 
 
@@ -348,6 +351,111 @@ def upsert_table_users_university(login, new_university):
         return err.errno
 
 
+# Провожу Unit тестирование каждой функции
+class api_test(unittest.TestCase):
+    def test_select_table_questions_id_1(self):
+        self.assertEqual(select_table_questions_id(1), [0, (1, 'Вы любите космические исследования?', '["math", "astronomy", "programming"]', '{"math": 1.5, "anatomy": 0.4, "biology": 0.4, "economy": 0.9, "business": 1, "astronomy": 1.3, "chemistry": 0.6, "geography": 1.2, "psyhology": 0.8, "engineering": 1.4, "informatics": 1.6, "linguistics": 0.6, "programming": 1.2, "political science": 0.3, "religious studies": 0.2}')])
+
+    def test_select_table_questions_id_2(self):
+        self.assertEqual(select_table_questions_id(8), [0])
+
+    def test_select_table_questions_text_1(self):
+        self.assertEqual(select_table_questions_text("Вам нравятся гуманитарные предметы?"), [0, (2, 'Вам нравятся гуманитарные предметы?', '["psyhology", "linguistics", "biology", "anatomy", "religious studies", "political science", "chemistry", "business"]', '{"math": 0.5, "anatomy": 1.5, "biology": 1.5, "economy": 0.5, "business": 0.5, "astronomy": 0.5, "chemistry": 1.5, "geography": 1.5, "psyhology": 1.5, "engineering": 0.5, "informatics": 0.5, "linguistics": 1.5, "programming": 0.5, "political science": 1.5, "religious studies": 1.5}')])
+
+    def test_select_table_questions_text_2(self):
+        self.assertEqual(select_table_questions_text("Вам нравятся машины?"), [0])
+
+    def test_select_table_questions_tags_1(self):
+        self.assertEqual(select_table_questions_tags('"math", "astronomy", "programming"'), [0, (1, 'Вы любите космические исследования?', '["math", "astronomy", "programming"]', '{"math": 1.5, "anatomy": 0.4, "biology": 0.4, "economy": 0.9, "business": 1, "astronomy": 1.3, "chemistry": 0.6, "geography": 1.2, "psyhology": 0.8, "engineering": 1.4, "informatics": 1.6, "linguistics": 0.6, "programming": 1.2, "political science": 0.3, "religious studies": 0.2}')])
+
+    def test_select_table_questions_tags_2(self):
+        self.assertEqual(select_table_questions_tags("math"), 3141)
+
+    def test_select_table_questions_tags_3(self):
+        self.assertEqual(select_table_questions_tags('"math"'), [0, (1, 'Вы любите космические исследования?', '["math", "astronomy", "programming"]', '{"math": 1.5, "anatomy": 0.4, "biology": 0.4, "economy": 0.9, "business": 1, "astronomy": 1.3, "chemistry": 0.6, "geography": 1.2, "psyhology": 0.8, "engineering": 1.4, "informatics": 1.6, "linguistics": 0.6, "programming": 1.2, "political science": 0.3, "religious studies": 0.2}'), (3, 'Вам нравится теоретическая информатика?', '["math", "informatics", "programming", "engineering"]', '{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 1.1, "astronomy": 1.2, "chemistry": 0.5, "geography": 0.5, "psyhology": 0.7, "engineering": 1.25, "informatics": 1.6, "linguistics": 0.5, "programming": 1.4, "political science": 0.5, "religious studies": 0.5}'), (4, 'Вам нравится экономика?', '["math", "economy", "linguistics", "geography"]', '{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 1.7, "business": 1.2, "astronomy": 1.2, "chemistry": 0.5, "geography": 1.2, "psyhology": 0.6, "engineering": 0.5, "informatics": 1.3, "linguistics": 0.6, "programming": 1.3, "political science": 1.5, "religious studies": 0.5}')])
+
+    def test_select_table_questions_weigths(self):
+        self.assertEqual(select_table_questions_weights(), [0, ('{"math": 1.5, "anatomy": 0.4, "biology": 0.4, "economy": 0.9, "business": 1, "astronomy": 1.3, "chemistry": 0.6, "geography": 1.2, "psyhology": 0.8, "engineering": 1.4, "informatics": 1.6, "linguistics": 0.6, "programming": 1.2, "political science": 0.3, "religious studies": 0.2}',), ('{"math": 0.5, "anatomy": 1.5, "biology": 1.5, "economy": 0.5, "business": 0.5, "astronomy": 0.5, "chemistry": 1.5, "geography": 1.5, "psyhology": 1.5, "engineering": 0.5, "informatics": 0.5, "linguistics": 1.5, "programming": 0.5, "political science": 1.5, "religious studies": 1.5}',), ('{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 1.1, "astronomy": 1.2, "chemistry": 0.5, "geography": 0.5, "psyhology": 0.7, "engineering": 1.25, "informatics": 1.6, "linguistics": 0.5, "programming": 1.4, "political science": 0.5, "religious studies": 0.5}',), ('{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 1.7, "business": 1.2, "astronomy": 1.2, "chemistry": 0.5, "geography": 1.2, "psyhology": 0.6, "engineering": 0.5, "informatics": 1.3, "linguistics": 0.6, "programming": 1.3, "political science": 1.5, "religious studies": 0.5}',)])
+
+    def test_select_table_users_login_1(self):
+        self.assertEqual(select_table_users_login("zerg12345"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+
+    def test_select_table_users_login_2(self):
+        self.assertEqual(select_table_users_login("DIMA123456789"), [0])
+
+    def test_select_table_users_password_1(self):
+        self.assertEqual(select_table_users_password("GG"), [0, ('kukuha', 'GG', 'Sasha', 'Kostylev', 'Valerevich', 'ITMO')])
+
+    def test_select_table_users_password_2(self):
+        self.assertEqual(select_table_users_password("PYTRPYRTY"), [0])
+
+    def test_select_table_users_name_1(self):
+        self.assertEqual(select_table_users_name("Dima"), [0])
+
+    def test_select_table_users_name_2(self):
+        self.assertEqual(select_table_users_name("KOLYA"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+
+    def test_select_table_users_surname_1(self):
+        self.assertEqual(select_table_users_surname("SVECHNIKAR"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+
+    def test_select_table_users_surname_2(self):
+        self.assertEqual(select_table_users_surname("GUGUGUGUG"), [0])
+
+    def test_select_table_users_patronymic_1(self):
+        self.assertEqual(select_table_users_patronymic("Valerevich"), [0, ('kukuha', 'GG', 'Sasha', 'Kostylev', 'Valerevich', 'ITMO')])
+
+    def test_select_table_users_patronymic_2(self):
+        self.assertEqual(select_table_users_patronymic("jdajsajdjasd"), [0])
+
+    def test_select_table_users_university_1(self):
+        self.assertEqual(select_table_users_university("ITMO"), [0, ('kukuha', 'GG', 'Sasha', 'Kostylev', 'Valerevich', 'ITMO')])
+
+    def test_select_table_users_university_2(self):
+        self.assertEqual(select_table_users_university("eqeqweqweq"), [0])
+
+    def test_select_table_results_login_1(self):
+        self.assertEqual(select_table_results_login("kerer"), [0, ('kerer', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}', datetime.datetime(2015, 5, 7, 10, 5, 23))])
+
+    def test_select_table_results_login_2(self):
+        self.assertEqual(select_table_results_login("adsadas"), [0])
+
+    def test_select_table_results_time_1(self):
+        self.assertEqual(select_table_results_time(datetime.datetime(2015, 5, 7, 10, 5, 23)), [0, ('kerer', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}', datetime.datetime(2015, 5, 7, 10, 5, 23))])
+
+    def test_select_table_results_time_2(self):
+        self.assertEqual(select_table_results_time("2015"), 1525)
+
+    def test_select_table_cafedras_id_1(self):
+        self.assertEqual(select_table_cafedras_id(1), [0, (1, 'kuku', 'ITMO', '2019', '2021', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}')])
+
+    def test_select_table_cafedras_id(self):
+        self.assertEqual(select_table_cafedras_id(120), [0])
+
+    def test_select_table_cafedras_titile_1(self):
+        self.assertEqual(select_table_cafedras_title("kuku"), [0, (1, 'kuku', 'ITMO', '2019', '2021', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}')])
+
+    def test_select_table_cafedras_title_2(self):
+        self.assertEqual(select_table_cafedras_title("dasdasdsa"), [0])
+
+    def test_select_table_cafedras_university_1(self):
+        self.assertEqual(select_table_cafedras_university("ITMO"), [0, (1, 'kuku', 'ITMO', '2019', '2021', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}')])
+
+    def test_select_table_cafedras_university_2(self):
+        self.assertEqual(select_table_cafedras_university("cvcv"), [0])
+
+    def test_select_table_cafedras_firstData_1(self):
+        self.assertEqual(select_table_cafedras_firstData("2019"), [0, (1, 'kuku', 'ITMO', '2019', '2021', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}')])
+
+    def test_select_table_cafedras_firstData_2(self):
+        self.assertEqual(select_table_cafedras_firstData("1514"), [0])
+
+    def test_select_table_cafedras_secondData_1(self):
+        self.assertEqual(select_table_cafedras_secondData("2021"), [0, (1, 'kuku', 'ITMO', '2019', '2021', '{"math": 1.9, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 0.2, "astronomy": 1.5, "chemistry": 0.8, "geography": 0.5, "psyhology": 0.5, "engineering": 1.8, "informatics": 1.5, "linguistics": 0.5, "programming": 1.5, "political science": 0.5, "religious studies": 0.5}')])
+
+    def test_select_table_cafedras_secondData_2(self):
+        self.assertEqual(select_table_cafedras_secondData("31231"), [0])
+
+
 if __name__ == '__main__':
     database = mysql.connector.connect(
         host="localhost",
@@ -355,3 +463,4 @@ if __name__ == '__main__':
         password="Zerg123456789ertyama_",
         database="expertsystem"
     )
+    unittest.main()
