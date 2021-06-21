@@ -1,9 +1,5 @@
 import mysql.connector
 import unittest
-import datetime
-# !/usr/bin/python
-# -*- coding: utf8 -*-
-
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу id
 def select_table_questions_id(id):
@@ -352,8 +348,7 @@ def upsert_table_users_university(login, new_university):
         return err.errno
 
 
-if __name__ == '__main__':
-    database = mysql.connector.connect(
+database = mysql.connector.connect(
         host="localhost",
         user="Dima",
         password="Zerg123456789ertyama_",
