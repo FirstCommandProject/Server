@@ -29,11 +29,4 @@ class api_test(unittest.TestCase):
         self.assertEqual(select_table_questions_weights(), [0, ('{"math": 1.5, "anatomy": 0.4, "biology": 0.4, "economy": 0.9, "business": 1, "astronomy": 1.3, "chemistry": 0.6, "geography": 1.2, "psyhology": 0.8, "engineering": 1.4, "informatics": 1.6, "linguistics": 0.6, "programming": 1.2, "political science": 0.3, "religious studies": 0.2}',), ('{"math": 0.5, "anatomy": 1.5, "biology": 1.5, "economy": 0.5, "business": 0.5, "astronomy": 0.5, "chemistry": 1.5, "geography": 1.5, "psyhology": 1.5, "engineering": 0.5, "informatics": 0.5, "linguistics": 1.5, "programming": 0.5, "political science": 1.5, "religious studies": 1.5}',), ('{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 0.5, "business": 1.1, "astronomy": 1.2, "chemistry": 0.5, "geography": 0.5, "psyhology": 0.7, "engineering": 1.25, "informatics": 1.6, "linguistics": 0.5, "programming": 1.4, "political science": 0.5, "religious studies": 0.5}',), ('{"math": 1.4, "anatomy": 0.5, "biology": 0.5, "economy": 1.7, "business": 1.2, "astronomy": 1.2, "chemistry": 0.5, "geography": 1.2, "psyhology": 0.6, "engineering": 0.5, "informatics": 1.3, "linguistics": 0.6, "programming": 1.3, "political science": 1.5, "religious studies": 0.5}',)])
 
 
-if __name__ == '__main__':
-    database = mysql.connector.connect(
-        host="localhost",
-        user="Dima",
-        password="Zerg123456789ertyama_",
-        database="expertsystem"
-    )
-    unittest.main()
+unittest.main()
