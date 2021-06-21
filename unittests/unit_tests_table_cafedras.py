@@ -29,11 +29,4 @@ class api_test(unittest.TestCase):
         self.assertEqual(select_table_cafedras_firstData("1514"), [0])
 
 
-if __name__ == '__main__':
-    database = mysql.connector.connect(
-        host="localhost",
-        user="Dima",
-        password="Zerg123456789ertyama_",
-        database="expertsystem"
-    )
-    unittest.main()
+unittest.main()
