@@ -3,7 +3,7 @@ CREATE DATABASE expertsystem;
 USE expertsystem;
 
 CREATE TABLE Cafedras(
-    id INT UNIQUE,
+    id INT UNIQUE AUTO_INCREMENT,
     title TEXT,
     university TEXT(1024),
     firstData MEDIUMTEXT,
