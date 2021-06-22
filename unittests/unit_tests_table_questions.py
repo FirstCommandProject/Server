@@ -1,6 +1,5 @@
 from database_api import *
 import unittest
-import mysql.connector
 
 
 class api_test(unittest.TestCase):
