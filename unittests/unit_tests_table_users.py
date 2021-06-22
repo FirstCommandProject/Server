@@ -1,7 +1,5 @@
 from database_api import *
-import mysql.connector
 import unittest
-import datetime
 
 
 class api_test(unittest.TestCase):
@@ -40,6 +38,24 @@ class api_test(unittest.TestCase):
 
     def test_select_table_users_university_2(self):
         self.assertEqual(select_table_users_university("eqeqweqweq"), [0])
+
+    def test_upsert_table_users_login(self):
+        self.assertEqual(upsert_table_users_login("kozklik", "dimasss"), [0])
+
+    def test_upsert_table_users_password(self):
+        self.assertEqual(upsert_table_users_password("zerg12345", "GAAGA"), [0])
+
+    def test_upsert_table_users_name(self):
+        self.assertEqual(upsert_table_users_name("zerg12345", "DURANT"), [0])
+
+    def test_upsert_table_users_surname(self):
+        self.assertEqual(upsert_table_users_surname("zerg12345", "ASTRONAUT"), [0])
+
+    def test_upsert_table_users_patronymic(self):
+        self.assertEqual(upsert_table_users_patronymic("zerg12345", "CAREER"), [0])
+
+    def test_upsert_table_users_university(self):
+        self.assertEqual(upsert_table_users_university("zerg12345", "OXFORD"), [0])
 
 
 unittest.main()
