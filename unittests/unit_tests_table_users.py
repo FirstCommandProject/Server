@@ -4,7 +4,7 @@ import unittest
 
 class api_test(unittest.TestCase):
     def test_select_table_users_login_1(self):
-        self.assertEqual(select_table_users_login("zerg12345"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+        self.assertEqual(select_table_users_login("zerg12345"), [0, ('zerg12345', 'GAAGA', 'DURANT', 'ASTRONAUT', 'CAREER', 'OXFORD')])
 
     def test_select_table_users_login_2(self):
         self.assertEqual(select_table_users_login("DIMA123456789"), [0])
@@ -19,10 +19,10 @@ class api_test(unittest.TestCase):
         self.assertEqual(select_table_users_name("Dima"), [0])
 
     def test_select_table_users_name_2(self):
-        self.assertEqual(select_table_users_name("KOLYA"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+        self.assertEqual(select_table_users_name("KOLYA"), [0])
 
     def test_select_table_users_surname_1(self):
-        self.assertEqual(select_table_users_surname("SVECHNIKAR"), [0, ('zerg12345', 'PUTIN', 'KOLYA', 'SVECHNIKAR', 'keraj', 'KUBGAU')])
+        self.assertEqual(select_table_users_surname("SVECHNIKAR"), [0])
 
     def test_select_table_users_surname_2(self):
         self.assertEqual(select_table_users_surname("GUGUGUGUG"), [0])
