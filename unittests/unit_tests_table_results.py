@@ -1,5 +1,4 @@
 from database_api import *
-import mysql.connector
 import unittest
 import datetime
 
@@ -16,6 +15,12 @@ class api_test(unittest.TestCase):
 
     def test_select_table_results_time_2(self):
         self.assertEqual(select_table_results_time("2015"), 1525)
+
+    def test_insert_table_results_1(self):
+        self.assertEqual(insert_table_results("zadorin", '{"math": 1.4, "culture": 2.2, "astronomy": 0.3}', "2013-05-15 11:22:23"), [0])
+
+    def test_insert_table_results_2(self):
+        self.assertEqual(insert_table_results("asdasd", {"sir": 1.2, "heh": 0.5}, "2011-05-15 11:25:24"), 1064)
 
 
 unittest.main()
