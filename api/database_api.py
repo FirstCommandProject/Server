@@ -1,6 +1,7 @@
 import mysql.connector
 import unittest
 
+
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу id
 def select_table_questions_id(id):
     try:
@@ -9,8 +10,8 @@ def select_table_questions_id(id):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу text
@@ -283,7 +284,9 @@ def insert_table_results(login, weights, time):
     try:
         cursor = database.cursor()
         cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.ProgrammingError as err:
         return err.errno
 
@@ -293,7 +296,9 @@ def upsert_table_users_login(last_login, new_login):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET login = %s WHERE login = %s", (last_login, new_login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
@@ -303,7 +308,9 @@ def upsert_table_users_password(login, new_password):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET password = %s WHERE login = %s", (new_password, login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
@@ -313,7 +320,9 @@ def upsert_table_users_name(login, new_name):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET name = %s WHERE login = %s", (new_name, login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
@@ -323,7 +332,9 @@ def upsert_table_users_surname(login, new_surname):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET surname = %s WHERE login = %s", (new_surname, login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
@@ -333,7 +344,9 @@ def upsert_table_users_patronymic(login, new_patronymic):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET patronymic = %s WHERE login = %s", (new_patronymic, login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
@@ -343,7 +356,9 @@ def upsert_table_users_university(login, new_university):
     try:
         cursor = database.cursor()
         cursor.execute(f"UPDATE Users SET university = %s WHERE login =  %s", (new_university, login,))
+        result = [0]
         database.commit()
+        return result
     except mysql.connector.Error as err:
         return err.errno
 
