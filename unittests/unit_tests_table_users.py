@@ -57,5 +57,9 @@ class api_test(unittest.TestCase):
     def test_upsert_table_users_university(self):
         self.assertEqual(upsert_table_users_university("zerg12345", "OXFORD"), [0])
 
+    def test_select_table_users_all_rows(self):
+        self.assertEqual(select_table_users_all_rows(), [0, ('zerg12345', 'GAAGA', 'DURANT', 'ASTRONAUT', 'CAREER', 'OXFORD'), ('kukuha', 'GG', 'Sasha', 'Kostylev', 'Valerevich', 'ITMO'), ('kozlikk', 'kozelok', 'KOK', 'KOKER', 'iron', 'KUBGAU')])
+
+
 
 unittest.main()
