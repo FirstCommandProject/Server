@@ -363,13 +363,13 @@ def upsert_table_users_university(login, new_university):
 
 
 # Функция, которая проверяет соединение, в случае ошибки - возвращает код ошибки
-def _check_connection_database():
+def _check_connection_database(host, user, password, name_of_database):
     try:
         database = mysql.connector.connect(
-            host="localhost",
-            user="Dima",
-            password="Zerg123456789ertyama_",
-            database="expertsystem"
+            host=host,
+            user=user,
+            password=password,
+            database=name_of_database
         )
         result = [0]
         return result
