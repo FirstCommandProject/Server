@@ -1,5 +1,4 @@
 import mysql.connector
-import unittest
 
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу id
@@ -23,8 +22,8 @@ def select_table_questions_text(text):
         result.insert(0, 0)
         return result
 
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу tags
@@ -35,8 +34,8 @@ def select_table_questions_tags(tags):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Questions по столбцу weights
@@ -47,8 +46,8 @@ def select_table_questions_weights():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Questions по всем столбцам
@@ -59,8 +58,8 @@ def select_table_questions_all_rows():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу login
@@ -71,8 +70,8 @@ def select_table_users_login(login):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу password
@@ -83,8 +82,8 @@ def select_table_users_password(password):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу name
@@ -95,8 +94,8 @@ def select_table_users_name(name):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу surname
@@ -107,8 +106,8 @@ def select_table_users_surname(surname):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу patronymic
@@ -119,8 +118,8 @@ def select_table_users_patronymic(patronymic):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по столбцу university
@@ -131,8 +130,8 @@ def select_table_users_university(university):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Users по всем столбцам
@@ -143,8 +142,8 @@ def select_table_users_all_rows():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Results по столбцу login
@@ -155,8 +154,8 @@ def select_table_results_login(login):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Results по столбцу weights
@@ -167,8 +166,8 @@ def select_table_results_weights():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Results по столбцу time
@@ -179,8 +178,8 @@ def select_table_results_time(time):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Results по всем столбцам
@@ -191,8 +190,8 @@ def select_table_results_all_rows():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу id
@@ -203,8 +202,8 @@ def select_table_cafedras_id(id):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу title
@@ -215,8 +214,8 @@ def select_table_cafedras_title(title):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу university
@@ -227,8 +226,8 @@ def select_table_cafedras_university(university):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу firstData
@@ -239,8 +238,8 @@ def select_table_cafedras_firstData(firstData):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу secondData
@@ -251,8 +250,8 @@ def select_table_cafedras_secondData(secondData):
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по столбцу weights
@@ -263,8 +262,8 @@ def select_table_cafedras_weights():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос select к таблице Cafedras по всем столбцам
@@ -275,8 +274,8 @@ def select_table_cafedras_all_rows():
         result = cursor.fetchall()
         result.insert(0, 0)
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос insert к таблице Results
@@ -287,8 +286,8 @@ def insert_table_results(login, weights, time):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.ProgrammingError as err:
-        return err.errno
+    except mysql.connector.ProgrammingError as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу login
@@ -299,8 +298,8 @@ def upsert_table_users_login(last_login, new_login):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу password
@@ -311,8 +310,8 @@ def upsert_table_users_password(login, new_password):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу name
@@ -323,8 +322,8 @@ def upsert_table_users_name(login, new_name):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу surname
@@ -335,8 +334,8 @@ def upsert_table_users_surname(login, new_surname):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу patronymic
@@ -347,8 +346,8 @@ def upsert_table_users_patronymic(login, new_patronymic):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 # Функция, которая выполняет sql запрос update к таблице Users по столбцу university
@@ -359,8 +358,23 @@ def upsert_table_users_university(login, new_university):
         result = [0]
         database.commit()
         return result
-    except mysql.connector.Error as err:
-        return err.errno
+    except mysql.connector.Error as error:
+        return error.errno
+
+
+# Функция, которая проверяет соединение, в случае ошибки - возвращает код ошибки
+def _check_connection_database():
+    try:
+        database = mysql.connector.connect(
+            host="localhost",
+            user="Dima",
+            password="Zerg123456789ertyama_",
+            database="expertsystem"
+        )
+        result = [0]
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
 
 
 database = mysql.connector.connect(
