@@ -14,12 +14,11 @@ database = mysql.connector.connect(
 # Функция нужна для выполнения запросов, которые не были предусмотрены. (Расширение кода).
 #
 def make_custom_request(request, *arg):
-    print(arg)
     try:
         cursor = database.cursor(prepared=True)
-        cursor.executemany(request, arg)
+        cursor.execute(request, arg)
 
-        result = [0]
+        result = cursor.fetchall()
         database.commit()
 
         return result
@@ -154,12 +153,64 @@ def select_user_result_by_time(user_login, question_time):
         return error.errno
 
 
+#
+# Функция возвращает кол-во всех кафедр в БД.
+#
+def select_cafedras_count():
+    try:
+        cursor = database.cursor(prepared=True)
+        cursor.execute(f"SELECT Count(*) FROM ExpertSystem.Cafedras")
+
+        result = cursor.fetchall()
+        database.commit()
+
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
+
+
+#
+# Функция получает все данные о кафедре по ID.
+#
+def select_cafedra_by_id(cafedra_id):
+    try:
+        cursor = database.cursor(prepared=True)
+        cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras WHERE id = %s", (cafedra_id,))
+
+        result = cursor.fetchall()
+        database.commit()
+
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
+
+
+#
+# Функция получает все данные об определенных кафедрах.
+#
+def select_cafedras(limit, offset):
+    try:
+        cursor = database.cursor(prepared=True)
+        cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras ORDER BY university DESC LIMIT %s OFFSET %s", (limit, offset,))
+
+        result = cursor.fetchall()
+        database.commit()
+
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
+
+
 # Tests
 
-# print(make_custom_request(f"UPDATE ExpertSystem.Users SET name = %s WHERE login = %s", ("help me", "ab")))
+# print(make_custom_request(f"UPDATE ExpertSystem.Users SET name = %s WHERE login = %s", ("123123123 me", "ab")))
+# print(make_custom_request(f"SELECT * FROM ExpertSystem.Users WHERE login = %s AND password = %s", "login", "password"))
 # print(authorize_user("login", "password"))
 # print(add_new_user("a", "a", "a", "a", "a", "a"))
 # print(update_user_data("a", "ab", "a", "a", "a", "a", "a"))
 # print(select_user_data("login"))
 # print(select_question_by_id(1))
 # print(select_user_results("login", 1, 0))
+# print(select_cafedras_count())
+# print(select_cafedra_by_id(1))
+# print(select_cafedras(1, 0))
