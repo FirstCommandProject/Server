@@ -59,9 +59,12 @@ def _choose_relevant_tag(user_session_data, strictness) -> str:
 # Выбирает актуальный вопрос для пользователя, основываясь на уже известных предпочтениях
 # Возвращает id
 def _choose_relevant_question_id(user_session_data, strictness) -> int:
-    relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
-    relevant_question_id = _choose_random_question_by_tag(user_session_data, relevant_tag)['id']
-    return relevant_question_id
+    try:
+        relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
+        relevant_question_id = _choose_random_question_by_tag(user_session_data, relevant_tag)['id']
+        return relevant_question_id
+    except:
+        return -1
 
 
 # Выбирает актуальный вопрос для пользователя, основываясь на уже известных предпочтениях
@@ -71,9 +74,12 @@ def _choose_relevant_question_id(user_session_data, strictness) -> int:
 # Крайне не рекомендуется выбирать значения strictness в пределах от 0.000...1 до 0.2
 # Возвращает вопрос в виде json
 def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
-    relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
-    relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
-    return relevant_question
+    try:
+        relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
+        relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
+        return relevant_question
+    except:
+        return None
 
 
 # Ratio 1 - полностью применить. Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 2
@@ -86,16 +92,13 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
     try:
         assert user_session_data['answered']
         assert user_session_data['weights']
-    except AssertionError:
-        return None
 
-    if ratio == 0:
-        return user_session_data
+        if ratio == 0:
+            return user_session_data
 
-    question: dict = database_api.select_question_by_id(question_id)  # Вызов API для получения нужного вопроса
-    question_keys = question['weights'].keys()
+        question: dict = database_api.select_question_by_id(question_id)  # Вызов API для получения нужного вопроса
+        question_keys = question['weights'].keys()
 
-    try:
         for key in question_keys:
             if user_session_data['weights'].get(key):
                 if ratio == 1:
@@ -109,10 +112,10 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
                 else:
                     # Unsupported ratio
                     return None
-    except ZeroDivisionError:
-        return None
 
-    _update_answered_list(user_session_data, question_id)
-    _normalize_user_weights(user_session_data)
+        _update_answered_list(user_session_data, question_id)
+        _normalize_user_weights(user_session_data)
+    except:
+        return None
 
     return user_session_data
