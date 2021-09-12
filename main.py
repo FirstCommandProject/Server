@@ -1,11 +1,14 @@
 from flask import *
 from database_api import *
-
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/undefined/login', methods=['POST'])
+@cross_origin()
 def login():
     value = request.get_json(silent=True)
     if authorize_user(value['email'], value['password']) == [(1,)]:
@@ -19,6 +22,7 @@ def login():
 
 
 @app.route('/sign/up/undefined/registration', methods=['POST'])
+@cross_origin()
 def registration_page2():
     value = request.get_json(silent=True)
     if authorize_user(value['email'], value['password']) != [(1,)]:
@@ -29,4 +33,4 @@ def registration_page2():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
