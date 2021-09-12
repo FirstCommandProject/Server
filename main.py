@@ -1,6 +1,6 @@
 from flask import *
 from database_api import *
-import requests
+
 
 app = Flask(__name__)
 
@@ -29,4 +29,4 @@ def registration_page2():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
