@@ -20,7 +20,7 @@ def login():
         return abort(400)
 
 
-@app.route('/sign/up/undefined/registration', methods=['POST'])
+@app.route('/sign/up/', methods=['POST'])
 @cross_origin()
 def registration_page2():
     value = request.get_json(silent=True)
