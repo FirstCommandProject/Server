@@ -1,35 +1,52 @@
-from flask import *
-from database_api import *
-from flask_cors import CORS, cross_origin
-app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from database_api.database_api import *
+import uvicorn
+from models import *
 
+app = FastAPI()
 
-@app.route('/login', methods=['POST'])
-@cross_origin()
-def login():
-    value = request.get_json(silent=True)
-    if authorize_user(value['email'], value['password']) == [(1,)]:
-        result = select_user_data(value['email'])
-        dictionary_for_work = {}
-        dictionary_for_work.update({'200': result})
-        return dictionary_for_work
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=origins,
+    allow_headers=origins,
+)
+
+@app.post('/login', status_code=200)
+async def login(body: LoginModel):
+    if authorize_user(body.email, body.password) == [(1,)]:
+        result=select_user_data(body.email)
+        result_dictionary={}
+        result_dictionary.update(
+            statusCode='200', 
+            data=result[0]
+        )
+        return result_dictionary
     else:
-        print('Неверный логин или пароль')
-        return abort(400)
+        print('Ошибка входа')
+        raise HTTPException(status_code=400, detail="Неверный логин или пароль")
 
 
-@app.route('/sign/up/', methods=['POST'])
-@cross_origin()
-def registration_page2():
-    value = request.get_json(silent=True)
-    if authorize_user(value['email'], value['password']) != [(1,)]:
-        add_new_user(value['email', value['password'], value['firsName'], value['secondName'], value['thirdName'], value['university']])
-        return '200'
+@app.post('/registration', status_code=200)
+async def registration(body: RegistrModel):
+
+    if authorize_user(body.email, body.password) != [(1,)]:
+        result=add_new_user(body.email, body.password, body.firstName, body.secondName, body.thirdName, body.university)
+        result_dictionary={}
+        # TO-DO: return user in after_new_user function
+        result=select_user_data(body.email)
+        result_dictionary.update(
+            statusCode='200', 
+            data=result[0]
+        )
+        return result_dictionary
     else:
-        return abort(400)
+        print('Ошибка регистрации')
+        raise HTTPException(status_code=400, detail="Такой пользователь уже существует")
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    uvicorn.run('main:app', port=5000, reload=True)
