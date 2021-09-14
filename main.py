@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from database_api import *
+from database_api.database_api import *
 import uvicorn
 from models import *
 
