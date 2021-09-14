@@ -51,7 +51,7 @@ async def registration(body: RegistrModel):
 @app.post('/departments', status_code=200)
 async def departments(body:CafedraModel):
     if select_cafedra_by_id(body.id):
-        result = select_user_data(body.email)
+        result = select_cafedra_by_id(body.id)
         result_dictionary = {}
         result_dictionary.update(
             statusCode='200',
