@@ -81,9 +81,11 @@ def select_user_data(login):
                        (login,))
 
         result = cursor.fetchall()
+        dictionary = {'email': result[0][0], 'firstName': result[0][1], 'secondName': result[0][2], 'university': result[0][3]}
         database.commit()
 
-        return result
+        print(dictionary)
+        return dictionary
     except mysql.connector.Error as error:
         return error.errno
 
