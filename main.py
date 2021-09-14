@@ -51,7 +51,7 @@ async def registration(body: RegistrModel):
 @app.post('/departments', status_code=200)
 async def departments(body:CafedraModel):
     if select_cafedra_by_id(body.id):
-        result = select_cafedra_by_id(body.id)
+        result = select_user_data(body.email)
         result_dictionary = {}
         result_dictionary.update(
             statusCode='200',
@@ -59,7 +59,7 @@ async def departments(body:CafedraModel):
         )
         return result_dictionary
     else:
-        print('Ошибка')
+        select_cafedras()
         raise HTTPException(status_code=400, detail="Такой кафедры не существует")
 
 if __name__ == "__main__":
