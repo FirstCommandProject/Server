@@ -189,15 +189,15 @@ def select_cafedra_by_id(cafedra_id):
 #
 # Функция получает все данные об определенных кафедрах.
 #
-def select_cafedras(limit, offset):
+def select_cafedras():
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras ORDER BY university DESC LIMIT %s OFFSET %s", (limit, offset,))
+        cursor.execute("SELECT * FROM ExpertSystem.Cafedras ORDER BY university")
 
         result = cursor.fetchall()
         database.commit()
 
-        return result
+        print(result)
     except mysql.connector.Error as error:
         return error.errno
 
@@ -216,3 +216,4 @@ def select_cafedras(limit, offset):
 # print(select_cafedra_by_id(1))
 # print(select_cafedras(1, 0))
 #print(select_user_data('d_savosin@list.ru'))
+#select_cafedras()
