@@ -84,7 +84,6 @@ def select_user_data(login):
         dictionary = {'email': result[0][0], 'firstName': result[0][1], 'secondName': result[0][2], 'university': result[0][3]}
         database.commit()
 
-        print(dictionary)
         return dictionary
     except mysql.connector.Error as error:
         return error.errno
@@ -216,3 +215,4 @@ def select_cafedras(limit, offset):
 # print(select_cafedras_count())
 # print(select_cafedra_by_id(1))
 # print(select_cafedras(1, 0))
+#print(select_user_data('d_savosin@list.ru'))
