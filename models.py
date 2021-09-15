@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+import json
+import time
 
 
 class LoginModel(BaseModel):
@@ -22,3 +24,22 @@ class CafedraModel(BaseModel):
     firstData: str
     secondData: str
     weights: dict
+
+
+class QuestionModel(BaseModel):
+    id: int
+
+
+class ResultModel(BaseModel):
+    email: str
+
+
+class UserSessionDataModel(BaseModel):
+    weights: dict
+    answered: list
+
+
+class AnswerQuestion(BaseModel):
+    session: dict
+    id: int
+    answer: int
