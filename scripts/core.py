@@ -14,7 +14,7 @@ def _normalize_user_weights(st):
 
 
 def _update_answered_list(user_session_data, question_id):
-    assert user_session_data['answered']
+    #assert user_session_data['answered']
     user_session_data['answered'].append(question_id)
 
 
@@ -27,8 +27,7 @@ def _choose_random_question_by_tag(user_session_data, relevant_tag):
 
     query = f"SELECT * FROM ExpertSystem.Questions WHERE " \
             f"JSON_CONTAINS(tags, '[{relevant_tag}]') AND id NOT IN ({raw_array_representation}) ORDER BY RAND() LIMIT 1"
-
-    random_question = database_api.make_custom_request(query)
+    random_question = make_custom_request(relevant_tag, raw_array_representation)
     return random_question
 
 
@@ -89,33 +88,26 @@ def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
 # Ratio -1 - применить в обратную сторону.
 #   Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 0.5
 def update_weights(user_session_data, question_id, ratio) -> dict:
-    try:
-        assert user_session_data['answered']
-        assert user_session_data['weights']
+    if ratio == 0:
+        return user_session_data
 
-        if ratio == 0:
-            return user_session_data
+    question: dict = select_question_by_id(question_id)  # Вызов API для получения нужного вопроса
+    question_keys = question['weights'].keys()
 
-        question: dict = database_api.select_question_by_id(question_id)  # Вызов API для получения нужного вопроса
-        question_keys = question['weights'].keys()
-
-        for key in question_keys:
-            if user_session_data['weights'].get(key):
-                if ratio == 1:
-                    user_session_data['weights'][key] *= question['weights'][key]
-                elif ratio == 0.5:
-                    user_session_data['weights'][key] *= (question['weights'][key] + 1) / 2
-                elif ratio == -0.5:
-                    user_session_data['weights'][key] /= (question['weights'][key] + 1) / 2
-                elif ratio == -1:
-                    user_session_data['weights'][key] /= question['weights'][key]
-                else:
-                    # Unsupported ratio
-                    return None
+    for key in question_keys:
+        if user_session_data['weights'].get(key):
+            if ratio == 1:
+                user_session_data['weights'][key] *= question['weights'][key]
+            elif ratio == 0.5:
+                user_session_data['weights'][key] *= (question['weights'][key] + 1) / 2
+            elif ratio == -0.5:
+                user_session_data['weights'][key] /= (question['weights'][key] + 1) / 2
+            elif ratio == -1:
+                user_session_data['weights'][key] /= question['weights'][key]
+            else:
+                # Unsupported ratio
+                return None
 
         _update_answered_list(user_session_data, question_id)
         _normalize_user_weights(user_session_data)
-    except:
-        return None
-
     return user_session_data
