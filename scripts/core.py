@@ -1,5 +1,5 @@
 import random
-import Server.database_api.database_api as database_api
+import database_api.database_api as database_api
 
 
 # Нормализует веса в состоянии по принципу нормализации вектора

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database_api.database_api import *
 import uvicorn
 from models import *
-from core import *
+from scripts.core import *
 import json
 import time
 app = FastAPI()
@@ -64,8 +64,8 @@ async def departments(body:CafedraModel):
         select_cafedras()
         raise HTTPException(status_code=400, detail="Такой кафедры не существует")
 
-
-@app.get('/test', status_code=200)
+#получение вопроса
+@app.post('/test', status_code=200)
 async def questionreturn(body:QuestionModel):
     if select_question_by_id(body.id):
         result = select_question_by_id(body.id)
@@ -76,10 +76,10 @@ async def questionreturn(body:QuestionModel):
         )
         return result_dictionary
     else:
-        print('Ошибка')
+        print('Ошибка получения вопроса')
         raise HTTPException(status_code=400, detail='Такого вопроса не существует')
 
-
+#получение релевантного вопроса
 @app.post('/relevant-question', status_code=200)
 async def get_relevant_question(body:UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
@@ -91,7 +91,7 @@ async def get_relevant_question(body:UserSessionDataModel):
     )
     return result_dictionary
 
-
+#получение начальных настроек
 @app.get('/default-session', status_code=200)
 async def sessiondeault():
     dictionary = {}
@@ -102,7 +102,7 @@ async def sessiondeault():
         )
         return dictionary
 
-
+#обработка ответа
 @app.post('/answer-question', status_code=200)
 async def answerquestion(body:AnswerQuestion):
     dictionary = {}
