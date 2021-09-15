@@ -1,5 +1,5 @@
 import mysql.connector
-
+import json
 
 database = mysql.connector.connect(
         host="188.225.24.248",
@@ -13,10 +13,12 @@ database = mysql.connector.connect(
 #
 # Функция нужна для выполнения запросов, которые не были предусмотрены. (Расширение кода).
 #
-def make_custom_request(request, *arg):
+def make_custom_request(tag, massive):
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute(request, arg)
+        request = f"SELECT * FROM ExpertSystem.Questions WHERE " \
+            f'JSON_CONTAINS(tags,\'["{tag}"]\') AND id NOT IN ("{massive}") ORDER BY RAND() LIMIT 1'
+        cursor.execute(request)
 
         result = cursor.fetchall()
         database.commit()
@@ -98,9 +100,11 @@ def select_question_by_id(question_id):
         cursor.execute(f"SELECT * FROM ExpertSystem.Questions WHERE id = %s", (question_id,))
 
         result = cursor.fetchall()
+        dictionary = {'id': int(result[0][0]), 'title': result[0][1], 'tags': list(result[0][2]), 'weights': json.loads(result[0][3])}
+
         database.commit()
 
-        return result
+        return dictionary
     except mysql.connector.Error as error:
         return error.errno
 
@@ -217,3 +221,8 @@ def select_cafedras():
 # print(select_cafedras(1, 0))
 #print(select_user_data('d_savosin@list.ru'))
 #select_cafedras()
+#print(select_question_by_id(3))
+#print(make_custom_request('["chemistry"]', "1, 2, 3, 4, 5"))
+#print(make_custom_request("math", "1, 2, 3"))
+#print(make_custom_request())
+#print(select_question_by_id(3))
