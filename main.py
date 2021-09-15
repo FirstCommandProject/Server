@@ -3,7 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from database_api.database_api import *
 import uvicorn
 from models import *
-
+from core import *
+import json
+import time
 app = FastAPI()
 
 origins = ["*"]
@@ -61,6 +63,56 @@ async def departments(body:CafedraModel):
     else:
         select_cafedras()
         raise HTTPException(status_code=400, detail="Такой кафедры не существует")
+
+
+@app.get('/test', status_code=200)
+async def questionreturn(body:QuestionModel):
+    if select_question_by_id(body.id):
+        result = select_question_by_id(body.id)
+        result_dictionary = {}
+        result_dictionary.update(
+            statusCode='200',
+            data=result
+        )
+        return result_dictionary
+    else:
+        print('Ошибка')
+        raise HTTPException(status_code=400, detail='Такого вопроса не существует')
+
+
+@app.post('/relevant-question', status_code=200)
+async def get_relevant_question(body:UserSessionDataModel):
+    dictionary = {'weights': body.weights, 'answered': body.answered}
+    result_question = choose_relevant_question(dictionary)
+    result_dictionary = {}
+    result_dictionary.update(
+        statusCode='200',
+        data=result_question
+    )
+    return result_dictionary
+
+
+@app.get('/default-session', status_code=200)
+async def sessiondeault():
+    dictionary = {}
+    with open('session_pattern.json', 'r', encoding='UTF-8') as f:
+        dictionary.update(
+            statusCode='200',
+            data=f.read()
+        )
+        return dictionary
+
+
+@app.post('/answer-question', status_code=200)
+async def answerquestion(body:AnswerQuestion):
+    dictionary = {}
+    new_session = update_weights(body.session, body.id, body.answer)
+    dictionary.update(
+        statusCode='200',
+        data=new_session
+    )
+    return dictionary
+
 
 if __name__ == "__main__":
     uvicorn.run('main:app', port=5000, reload=True)
