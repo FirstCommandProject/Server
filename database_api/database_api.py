@@ -182,7 +182,7 @@ def select_cafedra_by_id(cafedra_id):
         cursor = database.cursor(prepared=True)
         cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras WHERE id = %s", (cafedra_id,))
         result = cursor.fetchall()
-        dictionary = {'id': result[0], 'title': result[1], 'university': result[2], 'firstData': result[3], 'secondData': result[4], 'weights': result[5]}
+        dictionary = {'id': result[0], 'name': result[1], 'description': result[2], 'price': result[3], 'years': result[4], 'form': result[5]}
         database.commit()
 
         return dictionary
@@ -196,12 +196,22 @@ def select_cafedra_by_id(cafedra_id):
 def select_cafedras():
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute("SELECT * FROM ExpertSystem.Cafedras ORDER BY university")
-
+        cursor.execute("SELECT * FROM Cafedras")
+        list1 = []
+        dictionary = {}
         result = cursor.fetchall()
-        database.commit()
+        for i in range(len(result)):
+            dictionary.update({'id': result[i][0], 'name': result[i][1], 'description': result[i][2], 'price': result[i][3], 'years': result[i][4], 'form': result[i][5]})
+            list1.append(dictionary)
+            dictionary = {}
+        result_dictionary = {}
+        result_dictionary.update(
+            statusCode='200',
+            data=list1
+        )
 
-        print(result)
+        database.commit()
+        return result_dictionary
     except mysql.connector.Error as error:
         return error.errno
 
@@ -226,3 +236,4 @@ def select_cafedras():
 #print(make_custom_request("math", "1, 2, 3"))
 #print(make_custom_request())
 #print(select_question_by_id(3))
+#print(select_cafedras())
