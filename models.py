@@ -48,3 +48,8 @@ class UpdateUserData(BaseModel):
     new_surname: str
     new_patronymic: str
     new_university: str
+
+
+class RestorePassword(BaseModel):
+    login: str
+    password: str
