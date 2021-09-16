@@ -66,7 +66,22 @@ def add_new_user(login, password, name, surname, patronymic, university):
 def update_user_data(old_login, new_login, new_password, new_name, new_surname, new_patronymic, new_university):
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute(f"UPDATE ExpertSystem.Users SET login = %s, password = %s, name = %s, surname = %s, patronymic = %s, university = %s WHERE login = %s", (new_login, new_password, new_name, new_surname, new_patronymic, new_university, old_login,))
+        cursor.execute(f"UPDATE ExpertSystem.Users SET login = %s, password = %s, name = %s, surname = %s, patronymic "
+                       f"= %s, university = %s WHERE login = %s", (new_login, new_password, new_name, new_surname,
+                                                                   new_patronymic, new_university, old_login,))
+
+        result = [0]
+        database.commit()
+
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
+
+
+def restore_user_password(login, password):
+    try:
+        cursor = database.cursor(prepared=True)
+        cursor.execute(f"UPDATE ExpertSystem.Users SET password = %s WHERE login = %s", (password, login,))
 
         result = [0]
         database.commit()
