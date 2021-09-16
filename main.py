@@ -17,6 +17,26 @@ app.add_middleware(
     allow_headers=origins,
 )
 
+session_pattern = {
+    "weights": {
+            "math":1,
+            "astronomy":1,
+            "programming":1, 
+            "informatics":1, 
+            "psychology":1, 
+            "linguistics":1,
+            "economy":1, 
+            "geography":1, 
+            "biology":1,
+            "anatomy":1,
+            "religious studies":1,
+            "political science":1,
+            "chemistry":1,
+            "business":1,
+            "engineering":1  
+    },
+    "answered": []
+}
 
 @app.post('/login', status_code=200)
 async def login(body: LoginModel):
@@ -95,12 +115,11 @@ async def get_relevant_question(body:UserSessionDataModel):
 @app.get('/default-session', status_code=200)
 async def sessiondeault():
     dictionary = {}
-    with open('session_pattern.json', 'r', encoding='UTF-8') as f:
-        dictionary.update(
-            statusCode='200',
-            data=f.read()
-        )
-        return dictionary
+    dictionary.update(
+        statusCode='200',
+        data=session_pattern
+    )
+    return dictionary
 
 #обработка ответа
 @app.post('/answer-question', status_code=200)

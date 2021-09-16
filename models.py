@@ -40,6 +40,6 @@ class UserSessionDataModel(BaseModel):
 
 
 class AnswerQuestion(BaseModel):
-    session: str
+    session: dict
     id: int
     answer: int
