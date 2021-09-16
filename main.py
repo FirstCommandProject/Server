@@ -127,7 +127,19 @@ async def changeuserdata(body:UpdateUserData):
         return dictionary
     else:
         print('Ошибка')
-        raise HTTPException(status_code=400, detail='Такого вопроса не существует')
+        raise HTTPException(status_code=400, detail='Такого пользователя не существует')
+
+
+@app.post('/restore-password', status_code=200)
+async def restorepassword(body:RestorePassword):
+    restore_user_password(body.login, body.password)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=select_user_data(body.login)
+    )
+    return dictionary
+
 
 if __name__ == "__main__":
     uvicorn.run('main:app', port=5000, reload=True)
