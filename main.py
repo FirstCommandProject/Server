@@ -141,5 +141,15 @@ async def restorepassword(body:RestorePassword):
     return dictionary
 
 
+@app.post('/take-user-data', status_code=200)
+async def takeuserdata(body:ResultModel):
+    result = select_user_data(body.email)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=result
+    )
+    return dictionary
+
 if __name__ == "__main__":
     uvicorn.run('main:app', port=5000, reload=True)
