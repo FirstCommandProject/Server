@@ -151,5 +151,27 @@ async def takeuserdata(body:ResultModel):
     )
     return dictionary
 
+
+@app.post('/last-user-answer', status_code=200)
+async def lastuseranswer(body:LastAnswer):
+    insert_table_results(body.login, body.session, body.time)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=[0]
+    )
+
+
+@app.post('/last-user-result', status_code=200)
+async def lastuserresult(body:LastResult):
+    result = select_last_result()
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=result
+    )
+    return dictionary
+
+
 if __name__ == "__main__":
     uvicorn.run('main:app', port=5000, reload=True)
