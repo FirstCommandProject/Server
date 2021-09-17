@@ -53,3 +53,15 @@ class UpdateUserData(BaseModel):
 class RestorePassword(BaseModel):
     login: str
     password: str
+
+
+class LastAnswer(BaseModel):
+    login: str
+    session: dict
+    time: str
+
+
+class LastResult(BaseModel):
+    login: str
+    session: dict
+    time: str
