@@ -60,6 +60,19 @@ def add_new_user(login, password, name, surname, patronymic, university):
         return error.errno
 
 
+def insert_table_results(login, weights, time):
+    try:
+        cursor = database.cursor()
+        cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
+
+        result = [0]
+        database.commit()
+
+        return result
+    except mysql.connector.ProgrammingError as error:
+        return error.errno
+
+
 #
 # Функция обновляет данные пользователя в БД.
 #
@@ -133,9 +146,11 @@ def select_last_result(user_login):
         cursor.execute(f"SELECT * FROM ExpertSystem.Results WHERE login = %s ORDER BY time DESC LIMIT 1", (user_login,))
 
         result = cursor.fetchall()
+        dictionary = {}
+        dictionary.update({'login':result[0], 'session':result[1], 'time':result[2]})
         database.commit()
 
-        return result
+        return dictionary
     except mysql.connector.Error as error:
         return error.errno
 
