@@ -63,5 +63,3 @@ class LastAnswer(BaseModel):
 
 class LastResult(BaseModel):
     email: str
-    session: dict
-    time: str

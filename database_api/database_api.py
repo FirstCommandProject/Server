@@ -63,7 +63,7 @@ def add_new_user(login, password, name, surname, patronymic, university):
 def insert_table_results(login, weights, time):
     try:
         cursor = database.cursor()
-        cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
+        cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{str(time)}')")
 
         result = [0]
         database.commit()
@@ -147,7 +147,9 @@ def select_last_result(user_login):
 
         result = cursor.fetchall()
         dictionary = {}
-        dictionary.update({'login':result[0], 'session':result[1], 'time':result[2]})
+        print("result", result)
+        if(result != []):
+            dictionary.update({'login':result[0], 'session':result[1], 'time':result[2]})
         database.commit()
 
         return dictionary

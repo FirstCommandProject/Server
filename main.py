@@ -116,8 +116,9 @@ async def get_relevant_question(body: UserSessionDataModel):
         )
         return result_dictionary
     else:
-        print('Ошибка')
-        raise HTTPException(status_code=500, detail='Ошибка на сервере: result_question is None')
+        print('Ошибка запроса вопроса')
+        raise HTTPException(status_code=204, detail='Нет данных')
+
 
 
 # Роут для отправки дефолтной сессии
@@ -199,8 +200,8 @@ async def last_user_answer(body: LastAnswer):
 
 # Получение последнего результата пользователя
 @app.post('/last-user-result', status_code=200)
-async def last_user_result(body: LastResult):
-    result = select_last_result()
+async def lastuserresult(body: LastResult):
+    result = select_last_result(body.email)
     dictionary = {}
     dictionary.update(
         statusCode='200',
