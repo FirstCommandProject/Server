@@ -108,6 +108,6 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
                 # Unsupported ratio
                 return None
 
-        _update_answered_list(user_session_data, question_id)
-        _normalize_user_weights(user_session_data)
+    _update_answered_list(user_session_data, question_id)
+    _normalize_user_weights(user_session_data)
     return user_session_data
