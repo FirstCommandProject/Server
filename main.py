@@ -176,8 +176,7 @@ async def lastuseranswer(body:LastAnswer):
     insert_table_results(body.login, body.session, body.time)
     dictionary = {}
     dictionary.update(
-        statusCode='200',
-        data=[0]
+        statusCode='200'
     )
 
 
