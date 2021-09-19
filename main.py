@@ -98,24 +98,6 @@ async def departments(body: CafedraModel):
         select_cafedras()
 
 
-# Запасной роут
-
-
-@app.get('/test', status_code=200)
-async def questionreturn(body: QuestionModel):
-    if select_question_by_id(body.id):
-        result = select_question_by_id(body.id)
-        result_dictionary = {}
-        result_dictionary.update(
-            statusCode='200',
-            data=result
-        )
-        return result_dictionary
-    else:
-        print('Ошибка')
-        raise HTTPException(status_code=400, detail='Такого вопроса не существует')
-
-
 # Роут для получения нужного вопроса
 
 
