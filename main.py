@@ -113,10 +113,10 @@ async def get_relevant_question(body: UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
     result_question = choose_relevant_question(dictionary)
     result_dictionary = {}
-    if result_question != -1 and result_question is not []:
+    if result_question != None:
         result_dictionary.update(
             statusCode='200',
-            data=result_question[0]
+            data=result_question
         )
         return result_dictionary
     else:
@@ -206,9 +206,9 @@ async def lastuseranswer(body: LastAnswer):
     insert_table_results(body.email, body.session, body.time)
     dictionary = {}
     dictionary.update(
-        statusCode='200',
-        data=[0]
+        statusCode='200'
     )
+    return dictionary
 
 
 # Получение последнего результата пользователя
