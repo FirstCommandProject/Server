@@ -60,13 +60,41 @@ def add_new_user(login, password, name, surname, patronymic, university):
         return error.errno
 
 
+def insert_table_results(login, weights, time):
+    try:
+        cursor = database.cursor()
+        cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{time}')")
+
+        result = [0]
+        database.commit()
+
+        return result
+    except mysql.connector.ProgrammingError as error:
+        return error.errno
+
+
 #
 # Функция обновляет данные пользователя в БД.
 #
 def update_user_data(old_login, new_login, new_password, new_name, new_surname, new_patronymic, new_university):
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute(f"UPDATE ExpertSystem.Users SET login = %s, password = %s, name = %s, surname = %s, patronymic = %s, university = %s WHERE login = %s", (new_login, new_password, new_name, new_surname, new_patronymic, new_university, old_login,))
+        cursor.execute(f"UPDATE ExpertSystem.Users SET login = %s, password = %s, name = %s, surname = %s, patronymic "
+                       f"= %s, university = %s WHERE login = %s", (new_login, new_password, new_name, new_surname,
+                                                                   new_patronymic, new_university, old_login,))
+
+        result = [0]
+        database.commit()
+
+        return result
+    except mysql.connector.Error as error:
+        return error.errno
+
+
+def restore_user_password(login, password):
+    try:
+        cursor = database.cursor(prepared=True)
+        cursor.execute(f"UPDATE ExpertSystem.Users SET password = %s WHERE login = %s", (password, login,))
 
         result = [0]
         database.commit()
@@ -118,9 +146,11 @@ def select_last_result(user_login):
         cursor.execute(f"SELECT * FROM ExpertSystem.Results WHERE login = %s ORDER BY time DESC LIMIT 1", (user_login,))
 
         result = cursor.fetchall()
+        dictionary = {}
+        dictionary.update({'login':result[0], 'session':result[1], 'time':result[2]})
         database.commit()
 
-        return result
+        return dictionary
     except mysql.connector.Error as error:
         return error.errno
 
@@ -182,7 +212,7 @@ def select_cafedra_by_id(cafedra_id):
         cursor = database.cursor(prepared=True)
         cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras WHERE id = %s", (cafedra_id,))
         result = cursor.fetchall()
-        dictionary = {'id': result[0], 'title': result[1], 'university': result[2], 'firstData': result[3], 'secondData': result[4], 'weights': result[5]}
+        dictionary = {'id': result[0], 'name': result[1], 'description': result[2], 'price': result[3], 'years': result[4], 'form': result[5]}
         database.commit()
 
         return dictionary
@@ -196,12 +226,22 @@ def select_cafedra_by_id(cafedra_id):
 def select_cafedras():
     try:
         cursor = database.cursor(prepared=True)
-        cursor.execute("SELECT * FROM ExpertSystem.Cafedras ORDER BY university")
-
+        cursor.execute("SELECT * FROM Cafedras")
+        list1 = []
+        dictionary = {}
         result = cursor.fetchall()
-        database.commit()
+        for i in range(len(result)):
+            dictionary.update({'id': result[i][0], 'name': result[i][1], 'description': result[i][2], 'price': result[i][3], 'years': result[i][4], 'form': result[i][5]})
+            list1.append(dictionary)
+            dictionary = {}
+        result_dictionary = {}
+        result_dictionary.update(
+            statusCode='200',
+            data=list1
+        )
 
-        print(result)
+        database.commit()
+        return result_dictionary
     except mysql.connector.Error as error:
         return error.errno
 
@@ -226,3 +266,4 @@ def select_cafedras():
 #print(make_custom_request("math", "1, 2, 3"))
 #print(make_custom_request())
 #print(select_question_by_id(3))
+#print(select_cafedras())

@@ -19,11 +19,6 @@ class RegistrModel(BaseModel):
 
 class CafedraModel(BaseModel):
     id: int
-    title: str
-    university: str
-    firstData: str
-    secondData: str
-    weights: dict
 
 
 class QuestionModel(BaseModel):
@@ -43,3 +38,30 @@ class AnswerQuestion(BaseModel):
     session: dict
     id: int
     answer: int
+
+
+class UpdateUserData(BaseModel):
+    login: str
+    new_login: str
+    new_password: str
+    new_name: str
+    new_surname: str
+    new_patronymic: str
+    new_university: str
+
+
+class RestorePassword(BaseModel):
+    login: str
+    password: str
+
+
+class LastAnswer(BaseModel):
+    login: str
+    session: dict
+    time: str
+
+
+class LastResult(BaseModel):
+    login: str
+    session: dict
+    time: str

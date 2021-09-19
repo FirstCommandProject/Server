@@ -72,20 +72,22 @@ async def registration(body: RegistrModel):
 
 @app.post('/departments', status_code=200)
 async def departments(body:CafedraModel):
-    if select_cafedra_by_id(body.id):
-        result = select_user_data(body.email)
-        result_dictionary = {}
-        result_dictionary.update(
-            statusCode='200',
-            data=result
-        )
-        return result_dictionary
+    if body.id:
+        if select_cafedra_by_id(body.id):
+            result = select_user_data(body.id)
+            result_dictionary = {}
+            result_dictionary.update(
+                statusCode='200',
+                data=result
+            )
+            return result_dictionary
+        else:
+            raise HTTPException(status_code=400, detail="Такой кафедры не существует")
     else:
         select_cafedras()
-        raise HTTPException(status_code=400, detail="Такой кафедры не существует")
 
-#получение вопроса
-@app.post('/test', status_code=200)
+
+@app.get('/test', status_code=200)
 async def questionreturn(body:QuestionModel):
     if select_question_by_id(body.id):
         result = select_question_by_id(body.id)
@@ -96,10 +98,10 @@ async def questionreturn(body:QuestionModel):
         )
         return result_dictionary
     else:
-        print('Ошибка получения вопроса')
+        print('Ошибка')
         raise HTTPException(status_code=400, detail='Такого вопроса не существует')
 
-#получение релевантного вопроса
+
 @app.post('/relevant-question', status_code=200)
 async def get_relevant_question(body:UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
@@ -111,7 +113,7 @@ async def get_relevant_question(body:UserSessionDataModel):
     )
     return result_dictionary
 
-#получение начальных настроек
+
 @app.get('/default-session', status_code=200)
 async def sessiondeault():
     dictionary = {}
@@ -121,7 +123,7 @@ async def sessiondeault():
     )
     return dictionary
 
-#обработка ответа
+
 @app.post('/answer-question', status_code=200)
 async def answerquestion(body:AnswerQuestion):
     dictionary = {}
@@ -129,6 +131,63 @@ async def answerquestion(body:AnswerQuestion):
     dictionary.update(
         statusCode='200',
         data=new_session
+    )
+    return dictionary
+
+
+@app.post('/new-user-data', status_code=200)
+async def changeuserdata(body:UpdateUserData):
+    if update_user_data(body.login, body.new_login, body.new_password, body.new_name, body.new_surname, body.new_patronymic, body.new_university) == [0]:
+        dictionary = {}
+        dictionary.update(
+            statusCode='200',
+            data=select_user_data(body.login)
+        )
+        return dictionary
+    else:
+        print('Ошибка')
+        raise HTTPException(status_code=400, detail='Такого пользователя не существует')
+
+
+@app.post('/restore-password', status_code=200)
+async def restorepassword(body:RestorePassword):
+    restore_user_password(body.login, body.password)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=select_user_data(body.login)
+    )
+    return dictionary
+
+
+@app.post('/take-user-data', status_code=200)
+async def takeuserdata(body:ResultModel):
+    result = select_user_data(body.email)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=result
+    )
+    return dictionary
+
+
+@app.post('/last-user-answer', status_code=200)
+async def lastuseranswer(body:LastAnswer):
+    insert_table_results(body.login, body.session, body.time)
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=[0]
+    )
+
+
+@app.post('/last-user-result', status_code=200)
+async def lastuserresult(body:LastResult):
+    result = select_last_result()
+    dictionary = {}
+    dictionary.update(
+        statusCode='200',
+        data=result
     )
     return dictionary
 
