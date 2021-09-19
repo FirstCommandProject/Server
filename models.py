@@ -41,8 +41,8 @@ class AnswerQuestion(BaseModel):
 
 
 class UpdateUserData(BaseModel):
-    login: str
-    new_login: str
+    email: str
+    new_email: str
     new_password: str
     new_name: str
     new_surname: str
@@ -51,17 +51,17 @@ class UpdateUserData(BaseModel):
 
 
 class RestorePassword(BaseModel):
-    login: str
+    email: str
     password: str
 
 
 class LastAnswer(BaseModel):
-    login: str
+    email: str
     session: dict
     time: str
 
 
 class LastResult(BaseModel):
-    login: str
+    email: str
     session: dict
     time: str
