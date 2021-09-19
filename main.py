@@ -34,6 +34,8 @@ session_pattern = {
             "neural_networks":1,
             "automation":1,
             "architecture":1,
+            "design":1,
+            "project_management":1,
             "english":1
     },
     "answered": []
