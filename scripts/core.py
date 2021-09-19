@@ -76,11 +76,15 @@ def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
     try:
         relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
         relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
+<<<<<<< HEAD
         assert relevant_question is not []
         res_dict = {'id': relevant_question[0][0], 'title': relevant_question[0][1],
                     'tags': relevant_question[0][2],
                     'weights': relevant_question[0][3]}
         return res_dict
+=======
+        return relevant_question
+>>>>>>> dev
     except:
         return None
 
