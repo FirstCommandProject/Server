@@ -65,8 +65,6 @@ async def login(body: LoginModel):
 
 
 # Роут для регистрации, на вход почта, пароль, имя, фамилия, отчество, университет
-
-
 @app.post('/registration', status_code=200)
 async def registration(body: RegistrModel):
     if authorize_user(body.email, body.password) != [(1,)]:
