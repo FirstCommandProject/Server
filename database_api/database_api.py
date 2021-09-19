@@ -63,7 +63,10 @@ def add_new_user(login, password, name, surname, patronymic, university):
 def insert_table_results(login, weights, time):
     try:
         cursor = database.cursor()
-        cursor.execute(f"INSERT INTO Results VALUES('{login}', '{weights}', '{str(time)}')")
+        weights = str(weights)
+        new_weights = weights.replace('\'', "\"")
+        print(f'INSERT INTO Results VALUES("{login}", \'{new_weights}\', "{str(time)}")')
+        cursor.execute(f'INSERT INTO Results VALUES("{login}", \'{new_weights}\', "{str(time)}")')
 
         result = [0]
         database.commit()
