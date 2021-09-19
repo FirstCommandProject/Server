@@ -216,10 +216,12 @@ def select_cafedra_by_id(cafedra_id):
         cursor = database.cursor(prepared=True)
         cursor.execute(f"SELECT * FROM ExpertSystem.Cafedras WHERE id = %s", (cafedra_id,))
         result = cursor.fetchall()
-        dictionary = {'id': result[0], 'name': result[1], 'description': result[2], 'price': result[3], 'years': result[4], 'form': result[5]}
         database.commit()
-
-        return dictionary
+        if result != []:
+            dictionary = {'id': result[0][0], 'name': result[0][1], 'description': result[0][2], 'price': result[0][3], 'years': result[0][4], 'form': result[0][5]}
+            return dictionary
+        else:
+            return {}
     except mysql.connector.Error as error:
         return error.errno
 

@@ -88,9 +88,9 @@ async def registration(body: RegistrModel):
 # Роут кафедр
 @app.post('/departments', status_code=200)
 async def departments(body: CafedraModel):
-    if body.id:
+    if body.id != -1:
         if select_cafedra_by_id(body.id):
-            result = select_user_data(body.id)
+            result = select_cafedra_by_id(body.id)
             result_dictionary = {}
             result_dictionary.update(
                 statusCode='200',
@@ -100,7 +100,7 @@ async def departments(body: CafedraModel):
         else:
             raise HTTPException(status_code=400, detail="Такой кафедры не существует")
     else:
-        select_cafedras()
+        return select_cafedras()
 
 
 # Роут для получения нужного вопроса
