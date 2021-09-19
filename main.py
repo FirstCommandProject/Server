@@ -85,9 +85,7 @@ async def registration(body: RegistrModel):
         raise HTTPException(status_code=400, detail="Такой пользователь уже существует")
 
 
-
 # Роут кафедр
-
 @app.post('/departments', status_code=200)
 async def departments(body: CafedraModel):
     if body.id:
@@ -106,14 +104,12 @@ async def departments(body: CafedraModel):
 
 
 # Роут для получения нужного вопроса
-
-
 @app.post('/relevant-question', status_code=200)
 async def get_relevant_question(body: UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
     result_question = choose_relevant_question(dictionary)
     result_dictionary = {}
-    if result_question != None:
+    if result_question is not None:
         result_dictionary.update(
             statusCode='200',
             data=result_question
@@ -121,15 +117,12 @@ async def get_relevant_question(body: UserSessionDataModel):
         return result_dictionary
     else:
         print('Ошибка')
-        raise HTTPException(status_code=500, detail='Ошибка на сервере')
-
+        raise HTTPException(status_code=500, detail='Ошибка на сервере: result_question is None')
 
 
 # Роут для отправки дефолтной сессии
-
-
 @app.get('/default-session', status_code=200)
-async def sessiondeault():
+async def session_default():
     dictionary = {}
     with open('session_pattern.json', 'r', encoding='UTF-8') as f:
         dictionary.update(
@@ -140,9 +133,8 @@ async def sessiondeault():
 
 
 # Обновление сессии
-
 @app.post('/answer-question', status_code=200)
-async def answerquestion(body: AnswerQuestion):
+async def answer_question(body: AnswerQuestion):
     dictionary = {}
     new_session = update_weights(body.session, body.id, body.answer)
     dictionary.update(
@@ -153,10 +145,8 @@ async def answerquestion(body: AnswerQuestion):
 
 
 # Обновляет данные пользователя
-
-
 @app.post('/new-user-data', status_code=200)
-async def changeuserdata(body: UpdateUserData):
+async def change_user_data(body: UpdateUserData):
     if update_user_data(body.email, body.new_email, body.new_password, body.new_name, body.new_surname,
                         body.new_patronymic, body.new_university) == [0]:
         dictionary = {}
@@ -174,7 +164,7 @@ async def changeuserdata(body: UpdateUserData):
 
 
 @app.post('/restore-password', status_code=200)
-async def restorepassword(body: RestorePassword):
+async def restore_password(body: RestorePassword):
     restore_user_password(body.email, body.password)
     dictionary = {}
     dictionary.update(
@@ -185,10 +175,8 @@ async def restorepassword(body: RestorePassword):
 
 
 # Возврат данных юзера по его почте
-
-
 @app.post('/take-user-data', status_code=200)
-async def takeuserdata(body: ResultModel):
+async def take_user_data(body: ResultModel):
     result = select_user_data(body.email)
     dictionary = {}
     dictionary.update(
@@ -199,10 +187,8 @@ async def takeuserdata(body: ResultModel):
 
 
 # Фиксирование результата пользователя
-
-
 @app.post('/last-user-answer', status_code=200)
-async def lastuseranswer(body: LastAnswer):
+async def last_user_answer(body: LastAnswer):
     insert_table_results(body.email, body.session, body.time)
     dictionary = {}
     dictionary.update(
@@ -212,10 +198,8 @@ async def lastuseranswer(body: LastAnswer):
 
 
 # Получение последнего результата пользователя
-
-
 @app.post('/last-user-result', status_code=200)
-async def lastuserresult(body: LastResult):
+async def last_user_result(body: LastResult):
     result = select_last_result()
     dictionary = {}
     dictionary.update(
