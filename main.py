@@ -111,11 +111,16 @@ async def get_relevant_question(body: UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
     result_question = choose_relevant_question(dictionary)
     result_dictionary = {}
-    result_dictionary.update(
-        statusCode='200',
-        data=result_question
-    )
-    return result_dictionary
+    if result_question != -1:
+        result_dictionary.update(
+            statusCode='200',
+            data=result_question
+        )
+        return result_dictionary
+    else:
+        print('Ошибка')
+        raise HTTPException(status_code=500, detail='Ошибка на сервере')
+
 
 
 # Роут для отправки дефолтной сессии
