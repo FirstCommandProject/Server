@@ -149,10 +149,9 @@ def select_last_result(user_login):
         cursor.execute(f"SELECT * FROM ExpertSystem.Results WHERE login = %s ORDER BY time DESC LIMIT 1", (user_login,))
 
         result = cursor.fetchall()
+
         dictionary = {}
-        print("result", result)
-        if(result != []):
-            dictionary.update({'login':result[0], 'session':result[1], 'time':result[2]})
+        dictionary.update({'login':result[0][0], 'session':result[0][1], 'time':result[0][2]})
         database.commit()
 
         return dictionary

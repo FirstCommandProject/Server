@@ -22,8 +22,8 @@ def _choose_random_question_by_tag(user_session_data, relevant_tag):
     raw_array_representation = ''  # Example: 2, 6, 10, 11
     for answered_id in user_session_data['answered']:
         if raw_array_representation != '':
-            raw_array_representation.append(', ')
-        raw_array_representation.append(str(answered_id))
+            raw_array_representation+=(', ')
+        raw_array_representation+=(str(answered_id))
 
     query = f"SELECT * FROM ExpertSystem.Questions WHERE " \
             f"JSON_CONTAINS(tags, '[{relevant_tag}]') AND id NOT IN ({raw_array_representation}) ORDER BY RAND() LIMIT 1"
@@ -76,12 +76,11 @@ def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
     try:
         relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
         relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
-        assert relevant_question is not []
+        assert relevant_question != []
         res_dict = {'id': relevant_question[0][0], 'title': relevant_question[0][1],
-                    'tags': relevant_question[0][2],
-                    'weights': relevant_question[0][3]}
+                'tags': relevant_question[0][2],
+                'weights': relevant_question[0][3]}
         return res_dict
-
     except:
         return None
 

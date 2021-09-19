@@ -106,16 +106,33 @@ async def departments(body: CafedraModel):
 # Роут для получения нужного вопроса
 @app.post('/relevant-question', status_code=200)
 async def get_relevant_question(body: UserSessionDataModel):
-    dictionary = {'weights': body.weights, 'answered': body.answered}
-    result_question = choose_relevant_question(dictionary)
-    result_dictionary = {}
-    if result_question is not None:
-        result_dictionary.update(
-            statusCode='200',
-            data=result_question
-        )
-        return result_dictionary
-    else:
+    try:
+        dictionary = {'weights': body.weights, 'answered': body.answered}
+        result_question = choose_relevant_question(dictionary)
+        result_dictionary = {}
+        if result_question is not None:
+            result_dictionary.update(
+                statusCode='200',
+                data=result_question
+            )
+            return result_dictionary
+        else: 
+            result_question = choose_relevant_question(dictionary)
+            if result_question is not None:
+                result_dictionary.update(
+                    statusCode='200',
+                    data=result_question
+                )
+                return result_dictionary
+            else: 
+                result_question = choose_relevant_question(dictionary)
+                if result_question is not None:
+                    result_dictionary.update(
+                        statusCode='200',
+                        data=result_question
+                    )
+                    return result_dictionary
+    except:
         print('Ошибка запроса вопроса')
         raise HTTPException(status_code=204, detail='Нет данных')
 
