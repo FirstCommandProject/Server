@@ -20,20 +20,21 @@ app.add_middleware(
 session_pattern = {
     "weights": {
             "math":1,
-            "astronomy":1,
-            "programming":1, 
-            "informatics":1, 
-            "psychology":1, 
-            "linguistics":1,
-            "economy":1, 
-            "geography":1, 
-            "biology":1,
-            "anatomy":1,
-            "religious studies":1,
-            "political science":1,
-            "chemistry":1,
-            "business":1,
-            "engineering":1  
+            "discrete_math":1,
+            "informatics":1,
+            "microprocessors":1,
+            "sport_programming":1,
+            "assembly_programming":1,
+            "high_level_programming":1,
+            "mobile_development":1,
+            "web_development":1,
+            "data_science":1,
+            "data_security":1,
+            "supercomputers":1,
+            "neural_networks":1,
+            "automation":1,
+            "architecture":1,
+            "english":1
     },
     "answered": []
 }
