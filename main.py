@@ -38,6 +38,9 @@ session_pattern = {
     "answered": []
 }
 
+# Роут для авторизации пользователя, на вход - почта и пароль
+
+
 @app.post('/login', status_code=200)
 async def login(body: LoginModel):
     if authorize_user(body.email, body.password) == [(1,)]:
@@ -49,8 +52,9 @@ async def login(body: LoginModel):
                 data=result
             )
             return result_dictionary
-        print('Ошибка входа')
-        raise HTTPException(status_code=400, detail="Неверный логин или пароль")
+        else:
+            print('Ошибка')
+            raise HTTPException(status_code=400, detail="Ошибка на сервере")
     else:
         print('Ошибка входа')
         raise HTTPException(status_code=400, detail="Неверный логин или пароль")
@@ -71,8 +75,9 @@ async def registration(body: RegistrModel):
                 data=result
             )
             return result_dictionary
-        print('Ошибка регистрации')
-        raise HTTPException(status_code=400, detail="Такой пользователь уже существует")
+        else:
+            print('Ошибка')
+            raise HTTPException(status_code=400, detail="Ошибка на сервере")
     else:
         print('Ошибка регистрации')
         raise HTTPException(status_code=400, detail="Такой пользователь уже существует")
@@ -106,11 +111,16 @@ async def get_relevant_question(body: UserSessionDataModel):
     dictionary = {'weights': body.weights, 'answered': body.answered}
     result_question = choose_relevant_question(dictionary)
     result_dictionary = {}
-    result_dictionary.update(
-        statusCode='200',
-        data=result_question
-    )
-    return result_dictionary
+    if result_question != -1:
+        result_dictionary.update(
+            statusCode='200',
+            data=result_question
+        )
+        return result_dictionary
+    else:
+        print('Ошибка')
+        raise HTTPException(status_code=500, detail='Ошибка на сервере')
+
 
 
 # Роут для отправки дефолтной сессии
