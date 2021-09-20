@@ -20,6 +20,8 @@ def make_custom_request(tag, massive):
         array = list(massive.split(', '))
         and_not_statements = ''
         for i in array:
+            if i == '':
+                break
             and_not_statements += f'AND id != {i} '
         print(f' -- And_not_statements={and_not_statements}')
         request = f"SELECT * FROM ExpertSystem.Questions WHERE " \
@@ -276,7 +278,7 @@ def select_cafedras():
 #select_cafedras()
 #print(select_question_by_id(3))
 #print(make_custom_request('["chemistry"]', "1, 2, 3, 4, 5"))
-#print(make_custom_request("math", "1, 3"))
+#print(make_custom_request("math", ""))
 #print(make_custom_request())
 #print(select_question_by_id(3))
 #print(select_cafedras())
