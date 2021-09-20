@@ -44,7 +44,7 @@ def _choose_random_question_by_tag(user_session_data, relevant_tag):
 # Пармаетр strictness означает насколько строго будет выбираться (0 - рандомно, 1 - максимально строго)
 # Крайне не рекомендуется выбирать значения strictness в пределах от 0.000...1 до 0.2
 # Возвращает тег
-def _choose_relevant_tag(user_session_data, strictness) -> str:
+def _choose_relevant_tag(user_session_data, strictness, excluded_tags) -> str:
     try:
         assert user_session_data['weights']
         assert 0 <= strictness <= 1
@@ -52,6 +52,9 @@ def _choose_relevant_tag(user_session_data, strictness) -> str:
         return None
 
     tags = list(user_session_data['weights'].keys())
+    for to_exclude in excluded_tags:
+        if to_exclude in tags:
+            tags.remove(to_exclude)
     chosen_tag_index = random.randint(0, len(tags) - 1)
     change = random.random() / (1 + strictness) > \
              (user_session_data['weights'][tags[chosen_tag_index]] * strictness) and strictness != 0
@@ -63,17 +66,6 @@ def _choose_relevant_tag(user_session_data, strictness) -> str:
 
 
 # Выбирает актуальный вопрос для пользователя, основываясь на уже известных предпочтениях
-# Возвращает id
-def _choose_relevant_question_id(user_session_data, strictness) -> int:
-    try:
-        relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
-        relevant_question_id = _choose_random_question_by_tag(user_session_data, relevant_tag)['id']
-        return relevant_question_id
-    except:
-        return -1
-
-
-# Выбирает актуальный вопрос для пользователя, основываясь на уже известных предпочтениях
 # Поиск производится по тегам, указанным в вопросах
 # Выбирается один из вопрос, который, вероятно, интересен человеку (хотя иногда может быть неинтересен)
 # Пармаетр strictness означает насколько строго будет выбираться (0 - рандомно, 1 - максимально строго)
@@ -82,10 +74,15 @@ def _choose_relevant_question_id(user_session_data, strictness) -> int:
 def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
     debug_print(f"Choose relevant question call: session={user_session_data}")
     try:
-        relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
-        debug_print(f" -- Relevant tag chosen: {relevant_tag}")
-        relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
-        debug_print(f" -- Relevant question chosen: {relevant_question}")
+        relevant_question = []
+        excluded_tags = []
+        while not relevant_question:
+            relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness, excluded_tags=excluded_tags)
+            excluded_tags.append(relevant_tag)
+            debug_print(f" -- Relevant tag chosen: {relevant_tag}")
+            relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
+            debug_print(f" -- Relevant question chosen: {relevant_question}")
+
         assert relevant_question != []
         res_dict = {'id': relevant_question[0][0], 'title': relevant_question[0][1],
                 'tags': relevant_question[0][2],
