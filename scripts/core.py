@@ -1,6 +1,13 @@
 import random
 from database_api.database_api import *
 
+DEBUG: bool = True
+
+
+def debug_print(*args):
+    if DEBUG:
+        print(*args)
+
 
 # Нормализует веса в состоянии по принципу нормализации вектора
 def _normalize_user_weights(st):
@@ -14,17 +21,17 @@ def _normalize_user_weights(st):
 
 
 def _update_answered_list(user_session_data, question_id):
-    #assert user_session_data['answered']
     user_session_data['answered'].append(question_id)
+    debug_print(f" -- Answered list updated with {question_id}. answered={user_session_data['answered']}")
 
 
 def _choose_random_question_by_tag(user_session_data, relevant_tag):
     raw_array_representation = ''  # Example: 2, 6, 10, 11
     for answered_id in user_session_data['answered']:
         if raw_array_representation != '':
-            raw_array_representation+=(', ')
-        raw_array_representation+=(str(answered_id))
-
+            raw_array_representation += ', '
+        raw_array_representation += (str(answered_id))
+    debug_print(f" -- Answered array string representation: {raw_array_representation}")
     query = f"SELECT * FROM ExpertSystem.Questions WHERE " \
             f"JSON_CONTAINS(tags, '[{relevant_tag}]') AND id NOT IN ({raw_array_representation}) ORDER BY RAND() LIMIT 1"
     random_question = make_custom_request(relevant_tag, raw_array_representation)
@@ -73,15 +80,20 @@ def _choose_relevant_question_id(user_session_data, strictness) -> int:
 # Крайне не рекомендуется выбирать значения strictness в пределах от 0.000...1 до 0.2
 # Возвращает вопрос в виде json
 def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
+    debug_print(f"Choose relevant question call: session={user_session_data}")
     try:
         relevant_tag = _choose_relevant_tag(user_session_data, strictness=strictness)
+        debug_print(f" -- Relevant tag chosen: {relevant_tag}")
         relevant_question = _choose_random_question_by_tag(user_session_data, relevant_tag)
+        debug_print(f" -- Relevant question chosen: {relevant_question}")
         assert relevant_question != []
         res_dict = {'id': relevant_question[0][0], 'title': relevant_question[0][1],
                 'tags': relevant_question[0][2],
                 'weights': relevant_question[0][3]}
+        debug_print(f" -- Relevant question successfully built!")
         return res_dict
-    except:
+    except Exception as e:
+        print(f"Exception! {str(e)}")
         return None
 
 
@@ -92,10 +104,11 @@ def choose_relevant_question(user_session_data, strictness=0.75) -> dict:
 # Ratio -1 - применить в обратную сторону.
 #   Пример: Математика: 1, в вопросе математика: 2, в итоге в состоянии будет математика: 0.5
 def update_weights(user_session_data, question_id, ratio) -> dict:
+    debug_print(f"Update weights call: id={question_id}, ratio: {ratio}")
     if ratio == 0:
         return user_session_data
-
     question: dict = select_question_by_id(question_id)  # Вызов API для получения нужного вопроса
+    debug_print(f" -- Got question: {question}")
     question_keys = question['weights'].keys()
 
     for key in question_keys:
@@ -111,7 +124,7 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
             else:
                 # Unsupported ratio
                 return None
-
+    debug_print(f" -- Weights updated!")
     _update_answered_list(user_session_data, question_id)
     _normalize_user_weights(user_session_data)
     return user_session_data
