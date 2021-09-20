@@ -19,6 +19,7 @@ def make_custom_request(tag, massive):
         cursor = database.cursor(prepared=True)
         request = f"SELECT * FROM ExpertSystem.Questions WHERE " \
             f'JSON_CONTAINS(tags,\'["{tag}"]\') AND id NOT IN ("{massive}") ORDER BY RAND() LIMIT 1'
+        print(f" -- SQL query: {request}")
         cursor.execute(request)
 
         result = cursor.fetchall()

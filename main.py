@@ -116,7 +116,7 @@ async def get_relevant_question(body: UserSessionDataModel):
                 data=result_question
             )
             return result_dictionary
-        else: 
+        else:
             result_question = choose_relevant_question(dictionary)
             if result_question is not None:
                 result_dictionary.update(
@@ -124,7 +124,7 @@ async def get_relevant_question(body: UserSessionDataModel):
                     data=result_question
                 )
                 return result_dictionary
-            else: 
+            else:
                 result_question = choose_relevant_question(dictionary)
                 if result_question is not None:
                     result_dictionary.update(
@@ -135,7 +135,6 @@ async def get_relevant_question(body: UserSessionDataModel):
     except:
         print('Ошибка запроса вопроса')
         raise HTTPException(status_code=204, detail='Нет данных')
-
 
 
 # Роут для отправки дефолтной сессии
