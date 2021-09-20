@@ -1,5 +1,6 @@
 import mysql.connector
 import json
+import ast
 
 database = mysql.connector.connect(
         host="188.225.24.248",
@@ -131,7 +132,7 @@ def select_question_by_id(question_id):
         cursor.execute(f"SELECT * FROM ExpertSystem.Questions WHERE id = %s", (question_id,))
 
         result = cursor.fetchall()
-        dictionary = {'id': int(result[0][0]), 'title': result[0][1], 'tags': list(result[0][2]), 'weights': json.loads(result[0][3])}
+        dictionary = {'id': int(result[0][0]), 'title': result[0][1], 'tags': ast.literal_eval(result[0][2]), 'weights': json.loads(result[0][3])}
 
         database.commit()
 
