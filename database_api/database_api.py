@@ -17,8 +17,13 @@ database = mysql.connector.connect(
 def make_custom_request(tag, massive):
     try:
         cursor = database.cursor(prepared=True)
+        array = list(massive.split(', '))
+        and_not_statements = ''
+        for i in array:
+            and_not_statements += f'AND id != {i} '
+        print(f' -- And_not_statements={and_not_statements}')
         request = f"SELECT * FROM ExpertSystem.Questions WHERE " \
-            f'JSON_CONTAINS(tags,\'["{tag}"]\') AND id NOT IN ({massive}) ORDER BY RAND() LIMIT 1'
+            f'JSON_CONTAINS(tags,\'["{tag}"]\') {and_not_statements} ORDER BY RAND() LIMIT 1'
         print(f" -- SQL query: {request}")
         cursor.execute(request)
 
@@ -271,7 +276,7 @@ def select_cafedras():
 #select_cafedras()
 #print(select_question_by_id(3))
 #print(make_custom_request('["chemistry"]', "1, 2, 3, 4, 5"))
-#print(make_custom_request("math", "1, 2, 3"))
+#print(make_custom_request("math", "1, 3"))
 #print(make_custom_request())
 #print(select_question_by_id(3))
 #print(select_cafedras())
