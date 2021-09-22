@@ -261,6 +261,13 @@ def select_cafedras():
         return error.errno
 
 
+def return_how_many_questions():
+    cursor = database.cursor(prepared=True)
+    cursor.execute("SELECT count(*) FROM Questions")
+    result = cursor.fetchall()
+    database.commit()
+    return result
+
 # Tests
 
 # print(make_custom_request(f"UPDATE ExpertSystem.Users SET name = %s WHERE login = %s", ("123123123 me", "ab")))
@@ -282,3 +289,4 @@ def select_cafedras():
 #print(make_custom_request())
 #print(select_question_by_id(3))
 #print(select_cafedras())
+#print(return_how_many_questions())
