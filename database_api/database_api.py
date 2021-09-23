@@ -266,7 +266,10 @@ def return_how_many_questions():
     cursor.execute("SELECT count(*) FROM Questions")
     result = cursor.fetchall()
     database.commit()
-    return result[0][0]
+    if(result[0][0]):
+        return result[0][0]
+    else: 
+        return 0
 
 # Tests
 
