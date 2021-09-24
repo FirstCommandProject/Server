@@ -69,13 +69,15 @@ def add_new_user(login, password, name, surname, patronymic, university):
         return error.errno
 
 
-def insert_table_results(login, weights, time):
+def insert_table_results(login, weights, scores, time):
     try:
         cursor = database.cursor()
         weights = str(weights)
         new_weights = weights.replace('\'', "\"")
-        print(f'INSERT INTO Results VALUES("{login}", \'{new_weights}\', "{str(time)}")')
-        cursor.execute(f'INSERT INTO Results VALUES("{login}", \'{new_weights}\', "{str(time)}")')
+        new_scores = str(scores).replace('\'', "\"")
+        query = f'INSERT INTO Results VALUES("{login}", \'{new_weights}\', \'{new_scores}\' "{str(time)}")'
+        print(query)
+        cursor.execute(query)
 
         result = [0]
         database.commit()
@@ -160,7 +162,7 @@ def select_last_result(user_login):
         result = cursor.fetchall()
 
         dictionary = {}
-        dictionary.update({'login':result[0][0], 'session':result[0][1], 'time':result[0][2]})
+        dictionary.update({'login':result[0][0], 'session':result[0][1], 'scores': result[0][2], 'time':result[0][3]})
         database.commit()
 
         return dictionary
