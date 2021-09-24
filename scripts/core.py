@@ -1,5 +1,6 @@
 import random
 from database_api.database_api import *
+from json import loads
 
 DEBUG: bool = True
 
@@ -128,10 +129,10 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
 
 
 # Считает очки кафедры для конкретного человека по его результатам
-def _calculate_cafedra_score(user_session_data, cafedra_data) -> int:
+def _calculate_cafedra_score(user_session_data, raw_cafedra_data) -> int:
 
     score = 0
-
+    cafedra_data = loads(raw_cafedra_data)
     user_disciplines = set(user_session_data.keys())
     cafedra_disciplines = set(cafedra_data['weights'].keys())
     common_disciplines = user_disciplines & cafedra_disciplines
