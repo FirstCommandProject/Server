@@ -132,13 +132,13 @@ def update_weights(user_session_data, question_id, ratio) -> dict:
 def _calculate_cafedra_score(user_session_data, raw_cafedra_data) -> int:
 
     score = 0
-    cafedra_data = loads(raw_cafedra_data)
+    cafedra_data_weights = loads(raw_cafedra_data['weights'])
     user_disciplines = set(user_session_data.keys())
-    cafedra_disciplines = set(cafedra_data['weights'].keys())
+    cafedra_disciplines = set(cafedra_data_weights.keys())
     common_disciplines = user_disciplines & cafedra_disciplines
 
     for disc in common_disciplines:
-        score += user_session_data[disc] * cafedra_data['weights'][disc]
+        score += user_session_data[disc] * cafedra_data_weights[disc]
 
     return score
 
