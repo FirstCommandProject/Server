@@ -141,10 +141,11 @@ async def get_relevant_question(body: UserSessionDataModel):
 @app.get('/default-session', status_code=200)
 async def session_default():
     dictionary = {}
-    with open('session_pattern.json', 'r', encoding='UTF-8') as f:
+    with open('session_pattern.json', 'r', encoding='UTF-8') as session_pattern:
         dictionary.update(
             statusCode='200',
-            data=f.read()
+            data=session_pattern.read(),
+            totalCount=return_how_many_questions()
         )
         return dictionary
 
