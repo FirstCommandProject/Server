@@ -229,7 +229,7 @@ def select_cafedra_by_id(cafedra_id):
         result = cursor.fetchall()
         database.commit()
         if result != []:
-            dictionary = {'id': result[0][0], 'name': result[0][1], 'description': result[0][2], 'price': result[0][3], 'years': result[0][4], 'form': result[0][5], 'textTable': result[0][6], 'offers': result[0][7], 'weights': result[0][8], 'link': result[0][9]}
+            dictionary = {'id': result[0][0], 'name': result[0][1], 'description': result[0][2], 'place': result[0][3], 'years': result[0][4], 'form': result[0][5], 'textTable': result[0][6], 'offers': result[0][7], 'weights': result[0][8], 'link': result[0][9]}
             return dictionary
         else:
             return {}
@@ -248,7 +248,7 @@ def select_cafedras():
         dictionary = {}
         result = cursor.fetchall()
         for i in range(len(result)):
-            dictionary.update({'id': result[i][0], 'name': result[i][1], 'description': result[i][2], 'price': result[i][3], 'years': result[i][4], 'form': result[i][5], 'textTable': result[i][6], 'offers': result[i][7], 'weights': result[i][8], 'link': result[i][9]})
+            dictionary.update({'id': result[i][0], 'name': result[i][1], 'description': result[i][2], 'place': result[i][3], 'years': result[i][4], 'form': result[i][5], 'textTable': result[i][6], 'offers': result[i][7], 'weights': result[i][8], 'link': result[i][9]})
             list1.append(dictionary)
             dictionary = {}
         result_dictionary = {}
