@@ -132,12 +132,12 @@ def _calculate_cafedra_score(user_session_data, cafedra_data) -> int:
 
     score = 0
 
-    user_disciplines = set(user_session_data['weights'].keys())
+    user_disciplines = set(user_session_data.keys())
     cafedra_disciplines = set(cafedra_data['weights'].keys())
     common_disciplines = user_disciplines & cafedra_disciplines
 
     for disc in common_disciplines:
-        score += user_session_data['weights'][disc] * cafedra_data['weights'][disc]
+        score += user_session_data[disc] * cafedra_data['weights'][disc]
 
     return score
 
