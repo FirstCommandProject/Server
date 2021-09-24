@@ -140,3 +140,15 @@ def _calculate_cafedra_score(user_session_data, cafedra_data) -> int:
         score += user_session_data['weights'][disc] * cafedra_data['weights'][disc]
 
     return score
+
+
+def calculate_cafedras_score(user_session_data) -> list:
+    raw = tuple()
+    cafedras = select_cafedras()['data']
+    for c in cafedras:
+        raw += (_calculate_cafedra_score(user_session_data, c), c['id'])
+    raw = sorted(raw)
+    result = []
+    for d in raw:
+        result.append({'id': d[1], 'score': d[0]})
+    return result
