@@ -75,11 +75,7 @@ def insert_table_results(login, weights, scores, time):
         weights = str(weights)
         new_weights = weights.replace('\'', "\"")
         new_scores = str(scores).replace('\'', "\"")
-<<<<<<< HEAD
         query = f'INSERT INTO ExpertSystem.Results VALUES("{login}", \'{new_weights}\', \'{new_scores}\', "{str(time)}")'
-=======
-        query = f'INSERT INTO ExpertSystem.Results VALUES("{login}", \'{new_weights}\', \'{new_scores}\' "{str(time)}")'
->>>>>>> dev
         print(query)
         cursor.execute(query)
 
