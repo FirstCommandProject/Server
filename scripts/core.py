@@ -144,10 +144,10 @@ def _calculate_cafedra_score(user_session_data, raw_cafedra_data) -> int:
 
 
 def calculate_cafedras_score(user_session_data) -> list:
-    raw = tuple()
+    raw = list()
     cafedras = select_cafedras()['data']
     for c in cafedras:
-        raw += (_calculate_cafedra_score(user_session_data, c), c['id'])
+        raw.append([_calculate_cafedra_score(user_session_data, c), c['id']])
     raw = sorted(raw)
     result = []
     for d in raw:
