@@ -207,11 +207,19 @@ async def take_user_data(body: ResultModel):
 # Фиксирование результата пользователя
 @app.post('/last-user-answer', status_code=200)
 async def last_user_answer(body: LastAnswer):
-    insert_table_results(body.email, body.session, calculate_cafedras_score(body.session), body.time)
+    scores = calculate_cafedras_score(body.session)
+    result = insert_table_results(body.email, body.session, scores, body.time)
     dictionary = {}
-    dictionary.update(
-        statusCode='200'
-    )
+
+    if (result == 200):
+        dictionary.update(
+            statusCode='200'
+        )
+    else:
+        dictionary.update(
+            statusCode='400'
+        )
+    
     return dictionary
 
 
