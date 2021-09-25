@@ -163,7 +163,7 @@ async def answer_question(body: AnswerQuestion):
 
 
 # Обновляет данные пользователя
-@app.post('/new-user-data', status_code=200)
+@app.post('/change-user-information', status_code=200)
 async def change_user_data(body: UpdateUserData):
     if update_user_data(body.email, body.new_email, body.new_password, body.new_name, body.new_surname,
                         body.new_patronymic, body.new_university) == [0]:
@@ -174,7 +174,7 @@ async def change_user_data(body: UpdateUserData):
         )
         return dictionary
     else:
-        print('Ошибка обновления юзера')
+        print('Ошибка обновления пользователя')
         raise HTTPException(status_code=400, detail='Такого пользователя не существует')
 
 

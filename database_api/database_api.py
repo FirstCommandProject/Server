@@ -120,7 +120,7 @@ def select_user_data(login):
                        (login,))
 
         result = cursor.fetchall()
-        dictionary = {'email': result[0][0], 'firstName': result[0][1], 'secondName': result[0][2], 'university': result[0][3]}
+        dictionary = {'email': result[0][0], 'firstName': result[0][1], 'secondName': result[0][2], 'patronymic': result[0][3], 'university': result[0][4]}
         database.commit()
 
         return dictionary
