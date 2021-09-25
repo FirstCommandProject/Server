@@ -75,16 +75,13 @@ def insert_table_results(login, weights, scores, time):
         weights = str(weights)
         new_weights = weights.replace('\'', "\"")
         new_scores = str(scores).replace('\'', "\"")
-        query = f'INSERT INTO ExpertSystem.Results VALUES("{login}", \'{new_weights}\', \'{new_scores}\', "{str(time)}")'
-        print(query)
+        query = f'INSERT INTO ExpertSystem.Results VALUES(\'{login}\', \'{new_weights}\', \'{new_scores}\', \'{str(time)}\')'
         cursor.execute(query)
-
-        result = [0]
         database.commit()
 
-        return result
+        return 200
     except mysql.connector.ProgrammingError as error:
-        return error.errno
+        return error
 
 
 #
@@ -160,9 +157,10 @@ def select_last_result(user_login):
         cursor.execute(f"SELECT * FROM ExpertSystem.Results WHERE login = %s ORDER BY time DESC LIMIT 1", (user_login,))
 
         result = cursor.fetchall()
-
+        print(result)
         dictionary = {}
-        dictionary.update({'login':result[0][0], 'session':result[0][1], 'scores': result[0][2], 'time':result[0][3]})
+        if (result != []):
+            dictionary.update({'login':result[0][0], 'session':result[0][1], 'scores': result[0][2], 'time':result[0][3]})
         database.commit()
 
         return dictionary
