@@ -147,9 +147,9 @@ def calculate_cafedras_score(user_session_data) -> list:
     raw = list()
     cafedras = select_cafedras()['data']
     for c in cafedras:
-        raw.append([_calculate_cafedra_score(user_session_data, c), c['id']])
+        raw.append([c['id'], _calculate_cafedra_score(user_session_data, c)])
     raw = sorted(raw)
     result = []
     for d in raw:
-        result.append({'id': d[1], 'score': d[0]})
+        result.append({'id': d[0], 'score': d[1]})
     return result
