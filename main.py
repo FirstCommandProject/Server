@@ -57,7 +57,7 @@ async def login(body: LoginModel):
             )
             return result_dictionary
         else:
-            print('Ошибка')
+            print('Ошибка входа')
             raise HTTPException(status_code=400, detail="Ошибка на сервере")
     else:
         print('Ошибка входа')
@@ -78,7 +78,7 @@ async def registration(body: RegistrModel):
             )
             return result_dictionary
         else:
-            print('Ошибка')
+            print('Ошибка регистрации')
             raise HTTPException(status_code=400, detail="Ошибка на сервере")
     else:
         print('Ошибка регистрации')
@@ -174,7 +174,7 @@ async def change_user_data(body: UpdateUserData):
         )
         return dictionary
     else:
-        print('Ошибка')
+        print('Ошибка обновления юзера')
         raise HTTPException(status_code=400, detail='Такого пользователя не существует')
 
 

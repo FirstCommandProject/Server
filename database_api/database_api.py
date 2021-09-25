@@ -23,10 +23,8 @@ def make_custom_request(tag, massive):
             if i == '':
                 break
             and_not_statements += f'AND id != {i} '
-        print(f' -- And_not_statements={and_not_statements}')
         request = f"SELECT * FROM ExpertSystem.Questions WHERE " \
             f'JSON_CONTAINS(tags,\'["{tag}"]\') {and_not_statements} ORDER BY RAND() LIMIT 1'
-        print(f" -- SQL query: {request}")
         cursor.execute(request)
 
         result = cursor.fetchall()
@@ -157,7 +155,6 @@ def select_last_result(user_login):
         cursor.execute(f"SELECT * FROM ExpertSystem.Results WHERE login = %s ORDER BY time DESC LIMIT 1", (user_login,))
 
         result = cursor.fetchall()
-        print(result)
         dictionary = {}
         if (result != []):
             dictionary.update({'login':result[0][0], 'session':result[0][1], 'scores': result[0][2], 'time':result[0][3]})
