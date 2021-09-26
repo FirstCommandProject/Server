@@ -1,0 +1,4 @@
+uvicorn==0.15.0
+pydantic==1.8.2
+fastapi==0.68.1
+mysql_connector_repackaged==0.3.1
