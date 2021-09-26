@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import socket
-import sys
 from database_api.database_api import *
 import uvicorn
 from models import *
@@ -236,8 +234,5 @@ async def lastuserresult(body: LastResult):
     )
     return dictionary
 
-hostname = socket.gethostname()
-
 if __name__ == "__main__":
-    uvicorn.run('main:app', host=hostname, port=5000, reload=True)
-    
+    uvicorn.run('main:app', reload=True)
