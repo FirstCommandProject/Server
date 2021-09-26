@@ -225,7 +225,7 @@ async def last_user_answer(body: LastAnswer):
 
 # Получение последнего результата пользователя
 @app.post('/last-user-result', status_code=200)
-async def lastuserresult(body: LastResult):
+async def last_user_result(body: LastResult):
     result = select_last_result(body.email)
     dictionary = {}
     dictionary.update(
@@ -234,5 +234,10 @@ async def lastuserresult(body: LastResult):
     )
     return dictionary
 
+@app.get('/', status_code=200)
+async def first_data():
+    return 'hello world'
+
+
 if __name__ == "__main__":
-    uvicorn.run('main:app', reload=True)
+    uvicorn.run('main:app', port=5000, reload=True)
