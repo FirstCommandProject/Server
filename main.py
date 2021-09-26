@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import socket
+import sys
 from database_api.database_api import *
 import uvicorn
 from models import *
@@ -235,5 +237,18 @@ async def lastuserresult(body: LastResult):
     return dictionary
 
 
-if __name__ == "__main__":
-    uvicorn.run('main:app', port=5000, reload=True)
+# if __name__ == "__main__":
+#     uvicorn.run('main:app', port=5000, reload=True)
+
+hostname = socket.gethostname()
+
+version = f"{sys.version_info.major}.{sys.version_info.minor}"
+
+
+@app.get("/")
+async def read_root():
+    return {
+        "name": "my-app",
+        "host": hostname,
+        "version": f"Hello world! From FastAPI running on Uvicorn. Using Python {version}"
+    }
