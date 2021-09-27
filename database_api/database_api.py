@@ -69,7 +69,7 @@ def add_new_user(login, password, name, surname, patronymic, university):
 
 def insert_table_results(login, weights, scores, time):
     try:
-        cursor = database.cursor()
+        cursor = database.cursor(prepared=True)
         weights = str(weights)
         new_weights = weights.replace('\'', "\"")
         new_scores = str(scores).replace('\'', "\"")
